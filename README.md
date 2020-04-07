@@ -140,8 +140,10 @@ int note1,note2;		//用于计算加血数量的变量
 	//人物选择
 	IMAGE start97;
 	IMAGE select1;
-	IMAGE cursor1;
-	IMAGE cursor2;
+	IMAGE cursor1_p1;
+	IMAGE cursor2_p1;
+	IMAGE cursor1_p2;
+	IMAGE cursor2_p2;
 	//导入左侧玩家的动作
 	IMAGE bashenbenpao1;
 	IMAGE bashenzhanli1;
@@ -412,14 +414,15 @@ int note1,note2;		//用于计算加血数量的变量
 	IMAGE siwangshenpan2;
 	IMAGE bashensiwang;
 	IMAGE ksiwang;
-	IMAGE bashenshengli;
-	IMAGE kshengli;
+	IMAGE bkending;
 	IMAGE zuojiantou;
 	IMAGE zuojiantou_;
 	IMAGE youjiantou;
 	IMAGE youjiantou_;
 	IMAGE dazhao;
 	IMAGE dazhao_;
+	IMAGE bashenshengli;
+	IMAGE kshengli;
 	//加入开头说明的背景，使玩家更易理解游戏玩法
 	IMAGE shuoming1;
 	IMAGE shuoming2;
@@ -432,6 +435,9 @@ int note1,note2;		//用于计算加血数量的变量
 	IMAGE shaizi4;
 	IMAGE shaizi5;
 	IMAGE shaizi6;
+	//游戏结束时的箭头
+	IMAGE ending_cursor1;
+	IMAGE ending_cursor2;
 	
 /*******************************************函数声明***************************************************/
 
@@ -454,7 +460,7 @@ int note1,note2;		//用于计算加血数量的变量
 	void explain();				//游戏玩法及操作说明函数
 	int  first();				//先手判定函数
 	void fighting();			//战斗函数
-
+	int ending();				//游戏结束时的函数
 	
 
 void startup()			//初始化函数
@@ -526,12 +532,58 @@ void updataWithInput()//用户有关设置
 void gameover()
 {
 	EndBatchDraw();
-	closegraph();	
+	closegraph();
+	ShowWindow(FindWindow("ConsoleWindowClass",NULL),SW_HIDE);
+	exit(0);
 }
 
+int ending()
+{
+	char input;
+	input=getch();
+
+	int a=1;			//用来判断光标是否选择退出
+	int x=-100;
+	int y=-50;
+
+	while(1)
+	{	
+		if(kbhit())
+		{
+			input=getch();
+			putimage(0,0,&bkending);
+			if(input=='s' && y>=-50 && y<20)
+			{
+				y=y+70;
+				a--;
+			}
+			else if(input=='w' && y>-50 && y<=20)
+			{
+				y=y-70;
+				a++;
+			}
+			else if(a==1 && input=='y')				//游戏结束
+			{
+				gameover();
+			}
+													//按“y”键进行选择
+			else if(a==0 && input=='y')				//实现了光标只能在两个选项中移动
+			{
+				break;
+			}
+		}
+		putimage(x,y,&ending_cursor1,SRCAND);
+		putimage(x,y,&ending_cursor2,SRCPAINT);
+		FlushBatchDraw();
+	}
+	flag=0;
+
+	return flag;
+}
 
 int main()
 {
+	ShowWindow(FindWindow("ConsoleWindowClass",NULL),SW_HIDE);
 	startup();//数据初始化
 	while(1)//游戏循环 
 	{
@@ -770,122 +822,64 @@ int bloodplus(int dazhao,int blood,int time,int note)//加血函数
 
 void start_97()			//97界面
 {
-		char input;
-		input=getch();
-		while(1)
-		{
-			putimage(0,0,&start97);	//载入97界面的图片
-			Sleep(N);
-			FlushBatchDraw();
-			if(input=='j')			//按下j键进入下一个阶段
-				break;	
-		}
-		EndBatchDraw();
-	
+	char input;
+	input=getch();
+	while(1)
+	{
+		putimage(0,0,&start97);	//载入97界面的图片
+		Sleep(N);
+		FlushBatchDraw();
+		if(input=='j')			//按下j键进入下一个阶段
+			break;	
+	}
+	EndBatchDraw();	
 }
 
 
 void character_select()		//人物选择函数
 {
-	int select_x=47;				//选人光标初始位置横坐标
-	int select_y=40;				//选人光标初始位置纵坐标
-
-		char input;
-		int a=1;		//用于左右选人时的跳跃判定
-		int b=1;		//用于上下选人时的跳跃判定
-		while(1)
+	int select_x_p1=0;				//选人光标初始位置
+	int select_y_p1=5;
+	int select_x_p2=0;
+	int select_y_p2=5;
+	char input;
+	while(1)
+	{
+		if(kbhit())
 		{
-			if(kbhit())
-			{
-				input=getch();
-				putimage(0,0,&select1);		//人物大背景图
-				putimage(select_x,select_y,&cursor1,SRCAND);//选人方框
-				putimage(select_x,select_y,&cursor2,SRCPAINT);
-				FlushBatchDraw();
-				if(input=='j')			//按下j键进入下一个阶段
-					break;	
-				//以下内容中的判定部分是因为背景图片上的人物并不是一个正方形的图按
-				else if(input=='d' && select_x<570)//按下D键方框向右移动
-				{
-					if(a==3 || a==6)
-					{
-						select_x=select_x+115;
-						a++;
-					}
-					else if(a==4 && b==2)
-					{
-						if(select_x<560)
-						{
-							select_x=select_x+107;
-							a=a+2;
-						}
-					}
-					else
-					{
-						select_x=select_x+52;
-						a++;
-					}	
-				}	
-				else if(input=='a' && select_x>47)//按下A键方框向左移动
-				{
-					if(a==4 || a==7)
-					{
-						select_x=select_x-115;
-						a--;
-					}
-					else if(a==6 && b==2)
-					{
-						if(select_x>360)
-						{
-							select_x=select_x-107;
-							a=a-2;
-						}
-					}
-					else
-					{
-						select_x=select_x-52;
-						a--;
-					}
-				}
-				else if(a==4 || a==6)
-				{
-					if(input=='s' && select_y<300)//按下S键方框向左移动
-					{
-						if(b==1)
-						{
-							select_y=select_y+146;
-							b++;
-						}
-						else
-						{
-							select_y=select_y+73;
-							b++;
-						}
-					}
-					else if(input=='w' && select_y>50)//按下W键方框向左移动
-					{
-						if(b==2)
-						{
-							select_y=select_y-146;
-							b--;
-						}
-						else
-						{
-							select_y=select_y-73;
-							b--;
-						}
-					}
-				}
-				else
-				{
-					if(input=='s' && select_y<150)
-						select_y=select_y+73;
-					else if(input=='w' && select_y>40)
-						select_y=select_y-73;
-				}
-			}
+			input=getch();
+			putimage(0,0,&select1);
+			//p1操作
+			if(input=='y')								//按下y键进入下一个阶段
+				break;	
+			else if(GetAsyncKeyState(0x44) & 0x8000 && select_x_p1<270)			//光标的移动限制
+				select_x_p1=select_x_p1+54;
+			else if(GetAsyncKeyState(0x41) & 0x8000 && select_x_p1>0)
+				select_x_p1=select_x_p1-54;
+			else if(GetAsyncKeyState(0x53) & 0x8000 && select_y_p1<264)
+				select_y_p1=select_y_p1+66;
+			else if(GetAsyncKeyState(0x57) & 0x8000 && select_y_p1>5)
+				select_y_p1=select_y_p1-66;
+
+			//p2操作
+			else if(GetAsyncKeyState(VK_RIGHT) & 0x8000 && select_x_p2<270)			//光标的移动限制
+				select_x_p2=select_x_p2+54/2;
+			else if(GetAsyncKeyState(VK_LEFT) & 0x8000 && select_x_p2>0)
+				select_x_p2=select_x_p2-54/2;
+			else if(GetAsyncKeyState(VK_DOWN) & 0x8000 && select_y_p2<264)
+				select_y_p2=select_y_p2+66/2;
+			else if(GetAsyncKeyState(VK_UP) & 0x8000 && select_y_p2>5)
+				select_y_p2=select_y_p2-66/2;
 		}
-		EndBatchDraw();
+		//p1光标
+		putimage(select_x_p1,select_y_p1,&cursor1_p1,SRCAND);
+		putimage(select_x_p1,select_y_p1,&cursor2_p1,SRCPAINT);
+		//p2光标
+		putimage(select_x_p2,select_y_p2,&cursor1_p2,SRCAND);
+		putimage(select_x_p2,select_y_p2,&cursor2_p2,SRCPAINT);
+		FlushBatchDraw();
+	}
+	EndBatchDraw();
 }
 
 
@@ -996,7 +990,10 @@ void fighting()		//战斗函数
 	initgraph(width*1.5,high*1.3);//开一个更大的画布
 	putimage(0,0,&bk);//放置背景
 	fillrectangle(10,0,60,20);
-	int i,k;
+	int i;
+	mciSendString("open .\\bkmusic_start.mp3 alias bkmusic", NULL, 0, NULL);//播放背景音乐
+	mciSendString("play bkmusic", NULL, 0, NULL);	//播放一次
+		
 	//播放P1，P2的出场动画
 		for(i=0;(i<12 && kbhit()!=1);i++)
 	{	
@@ -2788,31 +2785,24 @@ void fighting()		//战斗函数
 			}
 		}
 			Sleep(100);
-			if(sign==0)//当其中一方死亡后进行判定，对应显示胜利方
+			if(sign==0)//当其中一方死亡后进入游戏结束画面
 			{
-				if(blood1<=0)
+				if(blood1<=0 || blood2<=0)
 				{	
-					putimage(0,0,&kshengli);
+					if(blood1<=0)
+					{
+						putimage(0,0,&kshengli);
+					}
+					if(blood2<=0)
+					{
+						putimage(0,0,&bashenshengli);
+					}
+					Sleep(500);
+					ending();
+					flag=ending();
 				}	
 			}
-			if(sign==0)
-			{
-				if(blood2<=0)
-				{
-					putimage(0,0,&bashenshengli);
-				}
-			}
-	}//sign
-		input=getch();
-		if(input=='j')//按下J键继续游戏
-		{
-			flag=0;
-		}
-		else if(input=='b')//按下B键退出游戏
-		{
-			exit(0);
-		}
-
+		}//sign
 	}//flag
 }
 
@@ -2929,8 +2919,12 @@ void pictureloading()//图片加载函数
 	//人物选择
 	loadimage(&start97,".\\start97.bmp");
 	loadimage(&select1,".\\select.png");
-	loadimage(&cursor1,".\\透明mask.bmp");
-	loadimage(&cursor2,".\\透明.bmp");
+
+	loadimage(&cursor1_p1,".\\p1光标mask.bmp");
+	loadimage(&cursor2_p1,".\\p1光标.bmp");
+
+	loadimage(&cursor1_p2,".\\p2光标mask.bmp");
+	loadimage(&cursor2_p2,".\\p2光标.bmp");
 	//战斗背景的导入
 	loadimage(&bk,".\\bk.png");
 	//左侧玩家控制的人物动作和战斗效果的导入	
@@ -3191,10 +3185,11 @@ void pictureloading()//图片加载函数
 	loadimage(&youjiantou_,".\\右箭头遮罩图.bmp");
 	loadimage(&bashensiwang,".\\bashensiwang.png");
 	loadimage(&ksiwang,".\\ksiwang.png");
-	loadimage(&bashenshengli,".\\bashenshengli.png");
-	loadimage(&kshengli,".\\kshengli.png");
+	loadimage(&bkending,".\\ending.png");
 	loadimage(&dazhao,".\\大招.bmp");
 	loadimage(&dazhao_,".\\大招遮罩图.bmp");
+	loadimage(&bashenshengli,"\\bashenshengli.png");
+	loadimage(&kshengli,"\\kshengli.png");
 	//导入开头解释说明的背景图片
 	loadimage(&shuoming1,".\\背景1.png");
 	loadimage(&shuoming2,".\\背景2.png");
@@ -3207,6 +3202,9 @@ void pictureloading()//图片加载函数
 	loadimage(&shaizi4,".\\色子4.png");
 	loadimage(&shaizi5,".\\色子5.png");
 	loadimage(&shaizi6,".\\色子6.png");
+	//游戏结束时的箭头
+	loadimage(&ending_cursor1,".\\箭头_mask.bmp");
+	loadimage(&ending_cursor2,".\\箭头.bmp");
 } 
 
 
