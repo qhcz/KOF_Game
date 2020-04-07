@@ -10,125 +10,224 @@
 #define N 40
 
 
+
+//定义人物的动作变量
+
+
 //图片定义//
 //开始动画
-IMAGE start_anime1;
-IMAGE start_anime2;
-IMAGE start_anime3;
-IMAGE start_anime4;
-IMAGE start_anime5;
-IMAGE start_anime6;
-IMAGE start_anime7;
-IMAGE start_anime8;
-IMAGE start_anime9;
-IMAGE start_anime10;
-IMAGE start_anime11;
-IMAGE start_anime12;
-IMAGE start_anime13;
-IMAGE start_anime14;
-IMAGE start_anime15;
-IMAGE start_anime16;
-IMAGE start_anime17;
-IMAGE start_anime18;
-IMAGE start_anime19;
-IMAGE start_anime20;
-IMAGE start_anime21;
-IMAGE start_anime22;
-IMAGE start_anime23;
-IMAGE start_anime24;
-IMAGE start_anime25;
-IMAGE start_anime26;
-IMAGE start_anime27;
-IMAGE start_anime28;
-IMAGE start_anime29;
-IMAGE start_anime30;
-IMAGE start_anime31;
-IMAGE start_anime32;
-IMAGE start_anime33;
-IMAGE start_anime34;
-IMAGE start_anime35;
-IMAGE start_anime36;
-IMAGE start_anime37;
-IMAGE start_anime38;
-IMAGE start_anime39;
-IMAGE start_anime40;
-IMAGE start_anime41;
-IMAGE start_anime42;
-IMAGE start_anime43;
-IMAGE start_anime44;
-IMAGE start_anime45;
-IMAGE start_anime46;
-IMAGE start_anime47;
-IMAGE start_anime48;
-IMAGE start_anime49;
-IMAGE start_anime50;
-IMAGE start_anime51;
-IMAGE start_anime52;
-IMAGE start_anime53;
-IMAGE start_anime54;
-IMAGE start_anime55;
-IMAGE start_anime56;
-IMAGE start_anime57;
-IMAGE start_anime58;
-IMAGE start_anime59;
-IMAGE start_anime60;
-IMAGE start_anime61;
-IMAGE start_anime62;
-IMAGE start_anime63;
-IMAGE start_anime64;
-IMAGE start_anime65;
-IMAGE start_anime66;
-IMAGE start_anime67;
-IMAGE start_anime68;
-IMAGE start_anime69;
-IMAGE start_anime70;
-IMAGE start_anime71;
-IMAGE start_anime72;
-IMAGE start_anime73;
-IMAGE start_anime74;
-IMAGE start_anime75;
-IMAGE start_anime76;
-IMAGE start_anime77;
-IMAGE start_anime78;
-IMAGE start_anime79;
-IMAGE start_anime80;
-IMAGE start_anime81;
-IMAGE start_anime82;
-IMAGE start_anime83;
-IMAGE start_anime84;
-IMAGE start_anime85;
-IMAGE start_anime86;
-IMAGE start_anime87;
-IMAGE start_anime88;
-IMAGE start_anime89;
-IMAGE start_anime90;
-IMAGE start_anime91;
-IMAGE start_anime92;
-IMAGE start_anime93;
-IMAGE start_anime94;
-IMAGE start_anime95;
-IMAGE start_anime96;
-IMAGE start_anime97;
-IMAGE start_anime98;
-IMAGE start_anime99;
-IMAGE start_anime100;
-IMAGE start_anime101;
-IMAGE start_anime102;
-IMAGE start_anime103;
-IMAGE start_anime104;
-IMAGE start_anime105;
-IMAGE start_anime106;
-//人物选择
-IMAGE start97;
-IMAGE select1;
-IMAGE cursor1;
-IMAGE cursor2;
+	IMAGE start_anime1;
+	IMAGE start_anime2;
+	IMAGE start_anime3;
+	IMAGE start_anime4;
+	IMAGE start_anime5;
+	IMAGE start_anime6;
+	IMAGE start_anime7;
+	IMAGE start_anime8;
+	IMAGE start_anime9;
+	IMAGE start_anime10;
+	IMAGE start_anime11;
+	IMAGE start_anime12;
+	IMAGE start_anime13;
+	IMAGE start_anime14;
+	IMAGE start_anime15;
+	IMAGE start_anime16;
+	IMAGE start_anime17;
+	IMAGE start_anime18;
+	IMAGE start_anime19;
+	IMAGE start_anime20;
+	IMAGE start_anime21;
+	IMAGE start_anime22;
+	IMAGE start_anime23;
+	IMAGE start_anime24;
+	IMAGE start_anime25;
+	IMAGE start_anime26;
+	IMAGE start_anime27;
+	IMAGE start_anime28;
+	IMAGE start_anime29;
+	IMAGE start_anime30;
+	IMAGE start_anime31;
+	IMAGE start_anime32;
+	IMAGE start_anime33;
+	IMAGE start_anime34;
+	IMAGE start_anime35;
+	IMAGE start_anime36;
+	IMAGE start_anime37;
+	IMAGE start_anime38;
+	IMAGE start_anime39;
+	IMAGE start_anime40;
+	IMAGE start_anime41;
+	IMAGE start_anime42;
+	IMAGE start_anime43;
+	IMAGE start_anime44;
+	IMAGE start_anime45;
+	IMAGE start_anime46;
+	IMAGE start_anime47;
+	IMAGE start_anime48;
+	IMAGE start_anime49;
+	IMAGE start_anime50;
+	IMAGE start_anime51;
+	IMAGE start_anime52;
+	IMAGE start_anime53;
+	IMAGE start_anime54;
+	IMAGE start_anime55;
+	IMAGE start_anime56;
+	IMAGE start_anime57;
+	IMAGE start_anime58;
+	IMAGE start_anime59;
+	IMAGE start_anime60;
+	IMAGE start_anime61;
+	IMAGE start_anime62;
+	IMAGE start_anime63;
+	IMAGE start_anime64;
+	IMAGE start_anime65;
+	IMAGE start_anime66;
+	IMAGE start_anime67;
+	IMAGE start_anime68;
+	IMAGE start_anime69;
+	IMAGE start_anime70;
+	IMAGE start_anime71;
+	IMAGE start_anime72;
+	IMAGE start_anime73;
+	IMAGE start_anime74;
+	IMAGE start_anime75;
+	IMAGE start_anime76;
+	IMAGE start_anime77;
+	IMAGE start_anime78;
+	IMAGE start_anime79;
+	IMAGE start_anime80;
+	IMAGE start_anime81;
+	IMAGE start_anime82;
+	IMAGE start_anime83;
+	IMAGE start_anime84;
+	IMAGE start_anime85;
+	IMAGE start_anime86;
+	IMAGE start_anime87;
+	IMAGE start_anime88;
+	IMAGE start_anime89;
+	IMAGE start_anime90;
+	IMAGE start_anime91;
+	IMAGE start_anime92;
+	IMAGE start_anime93;
+	IMAGE start_anime94;
+	IMAGE start_anime95;
+	IMAGE start_anime96;
+	IMAGE start_anime97;
+	IMAGE start_anime98;
+	IMAGE start_anime99;
+	IMAGE start_anime100;
+	IMAGE start_anime101;
+	IMAGE start_anime102;
+	IMAGE start_anime103;
+	IMAGE start_anime104;
+	IMAGE start_anime105;
+	IMAGE start_anime106;
+	//战斗背景
+	IMAGE bk;
+	//人物选择
+	IMAGE start97;
+	IMAGE select1;
+	IMAGE cursor1;
+	IMAGE cursor2;
+	//人物及人物的动作
+	IMAGE bashenbenpao1;
+	IMAGE bashenzhanli1;
+	IMAGE bashenchuchang1;
+	IMAGE bashenxiadun1;
+	IMAGE bashendazhao1;
+	IMAGE bashendazhao2;
+	IMAGE bashendazhao3;
+	IMAGE bashendazhao4;
+	IMAGE bashendazhao5;
+	IMAGE bashendazhao6;
+	IMAGE bashendazhao7;
+	IMAGE bashendazhao8;
+	IMAGE bashendazhao9;
+	IMAGE bashenerzhao1;
+	IMAGE bashenerzhao2;
+	IMAGE bashenqianjin1;
+	IMAGE bashenhoutui1;
+	IMAGE bashenhuibi1;
+	IMAGE bashenpugong21;
+	IMAGE bashenpugong22;
+	IMAGE bashenpugong23;
+	IMAGE bashensanzhao1;
+	IMAGE bashentiaoyue1;
+	IMAGE bashentiaoyue2;
+	IMAGE bashentiaoyue3;
+	IMAGE bashenpugong11;
+	IMAGE bashenpugong12;
+	IMAGE bashenpugong13;
+	IMAGE bashenpugong14;
+	IMAGE bashenbaoqi1;
+	IMAGE bashenbaoqi2;
+	IMAGE bashenjidao1;
+	IMAGE bashenjidao2;
+	IMAGE bashenjidao3;
+	IMAGE bashenfangshou1;
+	IMAGE bashenbenpao2;
+	IMAGE bashenzhanli2;
+	IMAGE bashenchuchang2;
+	IMAGE bashenxiadun2;
+	IMAGE bashendazhao;
+	IMAGE bashenerzhao;
+	IMAGE bashenqianjin;
+	IMAGE bashenhoutui;
+	IMAGE bashenhuibi;
+	IMAGE bashenpugong2;
+	IMAGE bashensanzhao;
+	IMAGE bashentiaoyue;
+	IMAGE bashenpugong1;
+	IMAGE bashenbaoqi;
+	IMAGE bashenjidao;
+	IMAGE bashenfangshou;
+	IMAGE bashentiaoyuegai1;
+	IMAGE bashentiaoyuegai2;
+	//导入遮罩图
+	IMAGE bashenbenpao1_;
+	IMAGE bashenzhanli1_;
+	IMAGE bashenchuchang1_;
+	IMAGE bashenxiadun1_;
+	IMAGE bashendazhao1_;
+	IMAGE bashendazhao2_;
+	IMAGE bashendazhao3_;
+	IMAGE bashendazhao4_;
+	IMAGE bashendazhao5_;
+	IMAGE bashendazhao6_;
+	IMAGE bashendazhao7_;
+	IMAGE bashendazhao8_;
+	IMAGE bashendazhao9_;
+	IMAGE bashenerzhao1_;
+	IMAGE bashenerzhao2_;
+	IMAGE bashenqianjin1_;
+	IMAGE bashenhoutui1_;
+	IMAGE bashenhuibi1_;
+	IMAGE bashenpugong21_;
+	IMAGE bashenpugong22_;
+	IMAGE bashenpugong23_;
+	IMAGE bashensanzhao1_;
+	IMAGE bashentiaoyue1_;
+	IMAGE bashentiaoyue2_;
+	IMAGE bashentiaoyue3_;
+	IMAGE bashenpugong11_;
+	IMAGE bashenpugong12_;
+	IMAGE bashenpugong13_;
+	IMAGE bashenpugong14_;
+	IMAGE bashenbaoqi1_;
+	IMAGE bashenbaoqi2_;
+	IMAGE bashenjidao1_;
+	IMAGE bashenjidao2_;
+	IMAGE bashenjidao3_;
+	IMAGE bashenfangshou1_;
+	IMAGE bashentiaoyuegai1_;
+	IMAGE bashentiaoyuegai2_;
+
 
 void startup();			//游戏初始化（加载图片等等）
 void gameover();		//游戏结束（结束绘图）
 void video();			//开始动画播放
 
-int start_video(int stage)
+int start_video(int stage)		
 {
 	if(stage==1)
 	{
@@ -270,15 +369,416 @@ int character_select(int stage)
 		EndBatchDraw();
 		stage=4;
 	}
-
+	stage=4;
 	return stage;
 }
 
 
 int fighting(int stage)
-{
-	if(stage==4)
+{	
+
+	int position_x=0,position_y=high;
+	int left=0,right=0;
+	int x=0,y=0;
+	char input;
+	closegraph();
+	initgraph(width*2.0,high*1.5);
+	putimage(0,0,&bk);
+	int i,k;
+	for(i=0;(i<12 && kbhit()!=1);i++)
+	{	
+		clearrectangle(0,477,200,255);
+		putimage(0,0,&bk);
+		putimage(0,477,200,255,&bashenchuchang1_,i*200,0,SRCAND);
+		putimage(0,477,200,255,&bashenchuchang1,i*200,0,SRCPAINT);
+		Sleep(N);
+		FlushBatchDraw();
+	}
+
+	while(1)
 	{
+			input=getch();
+			
+
+		if(kbhit()!=0)
+		{
+			for(i=0;(i<9 && kbhit()!=1);i++)
+			{
+				clearrectangle(0,0,691,477);
+				putimage(0,0,&bk);
+				putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+				putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+				Sleep(N);
+				FlushBatchDraw();
+			}
+		}
+	
+		if(kbhit()==0)
+			{
+				
+			
+			//Sleep(N);	
+				if(input=='a')		//实现八神的后退(左移)动作
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x>=0)
+					{
+						position_x=position_x-10;
+					}
+					left++;
+					putimage(position_x,position_y,200,255,&bashenhoutui1_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenhoutui1,left*200,0,SRCPAINT);
+					FlushBatchDraw();
+					if(left==9)
+						left=0;	
+				
+				}
+				if(input=='q')
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x>=0)
+					{
+						position_x=position_x-20;
+					}
+					left++;
+					putimage(position_x,position_y,200,255,&bashenhoutui1_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenhoutui1,left*200,0,SRCPAINT);
+					FlushBatchDraw();
+					if(left==9)
+						left=0;	
+
+				}
+				
+				
+				if(input=='d')
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+10;
+					}
+					left++;
+					putimage(position_x,position_y,200,255,&bashenqianjin1_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenqianjin1,left*200,0,SRCPAINT);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;		
+			
+				}
+			
+				if(input=='s')
+				{
+					for(i=0;(i<6&& kbhit()!=1);i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						putimage(position_x,position_y,200,255,&bashenxiadun1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenxiadun1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;(i<9&& kbhit()!=1);i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+
+				}
+				
+				if(input=='k')
+				{
+					for(i=0;(i<8&& kbhit()!=1);i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_y>=0)
+						{
+							position_y=position_y-35;
+						}
+						putimage(position_x,position_y,200,255,&bashentiaoyuegai1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashentiaoyuegai1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;(i<5&& kbhit()!=1);i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_y<=high*1.5)
+						{
+							position_y=position_y+56;
+						}
+						putimage(position_x,position_y,200,255,&bashentiaoyuegai2_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashentiaoyuegai2,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+
+				
+				}
+				if(input=='o')
+				{
+					for(i=0;(i<10&& kbhit()!=1);i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						putimage(position_x,position_y,200,255,&bashenbaoqi1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenbaoqi1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;(i<10&& kbhit()!=1);i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						putimage(position_x,position_y,200,255,&bashenbaoqi2_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenbaoqi2,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+				
+				}
+				if(input=='l')
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					left++;
+					position_x=position_x+20;
+					putimage(position_x,position_y,200,255,&bashenbenpao1_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenbenpao1,left*200,0,SRCPAINT);
+					FlushBatchDraw();
+					if(left==8)
+						left=0;		
+				}
+				if(input=='u')
+				{
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,200,255,&bashendazhao1_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashendazhao1,left*200,0,SRCPAINT);
+					Sleep(N);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+				}	
+					
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,200,255,&bashendazhao2_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashendazhao2,left*200,0,SRCPAINT);
+					Sleep(N);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+				}
+
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,200,255,&bashendazhao3_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashendazhao3,left*200,0,SRCPAINT);
+					Sleep(N);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+				}
+
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,155,255,&bashendazhao4_,left*200,0,SRCAND);
+					putimage(position_x,position_y,155,255,&bashendazhao4,left*200,0,SRCPAINT);
+					Sleep(N);
+					if(left==10)
+						left=0;
+				}
+
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,155,255,&bashendazhao5_,left*200,0,SRCAND);
+					putimage(position_x,position_y,155,255,&bashendazhao5,left*200,0,SRCPAINT);
+					Sleep(N);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+				}
+	
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,155,255,&bashendazhao6_,left*200,0,SRCAND);
+					putimage(position_x,position_y,155,255,&bashendazhao6,left*200,0,SRCPAINT);
+					Sleep(N);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+				}
+
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,155,255,&bashendazhao7_,left*200,0,SRCAND);
+					putimage(position_x,position_y,155,255,&bashendazhao7,left*200,0,SRCPAINT);
+					Sleep(N);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+				}
+
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,155,255,&bashendazhao8_,left*200,0,SRCAND);
+					putimage(position_x,position_y,155,255,&bashendazhao8,left*200,0,SRCPAINT);
+					Sleep(N);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+				}
+
+				for(i=0;(i<10&& kbhit()!=1);i++)
+				{
+
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					if(position_x<=width*2-200)
+					{
+						position_x=position_x+5;
+					}
+					left++;
+					putimage(position_x,position_y,200,255,&bashendazhao9_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashendazhao9,left*200,0,SRCPAINT);
+					Sleep(N);
+					FlushBatchDraw();
+					if(left==7)
+						left=0;
+				}
+				left=0;
+
+				}
+				if(input=='i')
+				{
+						for(i=0;(i<10&& kbhit()!=1);i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						putimage(position_x,position_y,200,255,&bashenerzhao1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenerzhao1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+						for(i=0;(i<9&& kbhit()!=1);i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						putimage(position_x,position_y,200,255,&bashenerzhao2_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenerzhao2,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+				}
+				if(input=='j')
+				{	
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					left++;
+					putimage(position_x,position_y,200,255,&bashenpugong11_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenpugong11,left*200,0,SRCPAINT);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					left++;
+					putimage(position_x,position_y,200,255,&bashenpugong12_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenpugong12,left*200,0,SRCPAINT);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					left++;
+					putimage(position_x,position_y,200,255,&bashenpugong13_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenpugong13,left*200,0,SRCPAINT);
+					FlushBatchDraw();
+					if(left==10)
+						left=0;
+					
+					clearrectangle(position_x,position_y,position_x+200,position_y+255);
+					putimage(0,0,&bk);
+					left++;
+					putimage(position_x,position_y,200,255,&bashenpugong14_,left*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenpugong14,left*200,0,SRCPAINT);
+					FlushBatchDraw();
+					if(left==4)
+						left=0;
+				left=0;
+				}
+			}
+		
+		}
+	if(stage==4)
+	{		
 		EndBatchDraw();
 		stage=5;
 	}
@@ -298,7 +798,8 @@ int ending(int stage)
 int main()
 {
 	int s1,s2,s3,s4;	//用于储存游戏下一阶段的变量
-	int stage=1;		//定义游戏阶段
+	int stage=1;		//定义游戏阶段，其中stage=1的时候对应的是播放开始动画，stage=2的时候是拳皇97的进入界面，stage=3对应的是游戏的选人界
+						//stage=4对应的是进入战斗界面
 	
 	startup();
 	
@@ -449,7 +950,83 @@ void startup()			//初始化函数
 	loadimage(&select1,".\\select.png");
 	loadimage(&cursor1,".\\透明mask.bmp");
 	loadimage(&cursor2,".\\透明.bmp");
-
+	//战斗背景的导入
+	loadimage(&bk,".\\bk.jpg");
+	//人物动作和战斗效果的导入	
+	loadimage(&bashenbenpao1,".\\bashen 1.bmp");
+	loadimage(&bashenbenpao1_,".\\bashen1.bmp");
+	loadimage(&bashenzhanli1,".\\bashen 2.bmp");
+	loadimage(&bashenzhanli1_,".\\bashen2.bmp");
+	loadimage(&bashenchuchang1,".\\bashen 3.bmp");
+	loadimage(&bashenchuchang1_,".\\bashen3.bmp");
+	loadimage(&bashenxiadun1,".\\bashen 4.bmp");
+	loadimage(&bashenxiadun1_,".\\bashen4.bmp");
+	loadimage(&bashendazhao1,".\\bashen 5.bmp");
+	loadimage(&bashendazhao1_,".\\bashen5.bmp");
+	loadimage(&bashendazhao2,".\\bashen 6.bmp");
+	loadimage(&bashendazhao2_,".\\bashen6.bmp");
+	loadimage(&bashendazhao3,".\\bashen 7.bmp");
+	loadimage(&bashendazhao3_,".\\bashen7.bmp");
+	loadimage(&bashendazhao4,".\\bashen 8.bmp");
+	loadimage(&bashendazhao4_,".\\bashen8.bmp");
+	loadimage(&bashendazhao5,".\\bashen 9.bmp");
+	loadimage(&bashendazhao5_,".\\bashen9.bmp");
+	loadimage(&bashendazhao6,".\\bashen 10.bmp");
+	loadimage(&bashendazhao6_,".\\bashen10.bmp");
+	loadimage(&bashendazhao7,".\\bashen 11.bmp");
+	loadimage(&bashendazhao7_,".\\bashen11.bmp");
+	loadimage(&bashendazhao8,".\\bashen 12.bmp");
+	loadimage(&bashendazhao8_,".\\bashen12.bmp");
+	loadimage(&bashendazhao9,".\\bashen 13.bmp");
+	loadimage(&bashendazhao9_,".\\bashen13.bmp");
+	loadimage(&bashenerzhao1,".\\bashen 14.bmp");
+	loadimage(&bashenerzhao1_,".\\bashen14.bmp");
+	loadimage(&bashenerzhao2,".\\bashen 15.bmp");
+	loadimage(&bashenerzhao2_,".\\bashen15.bmp");
+	loadimage(&bashenqianjin1,".\\bashen 16.bmp");
+	loadimage(&bashenqianjin1_,".\\bashen16.bmp");
+	loadimage(&bashenhoutui1,".\\bashen 17.bmp");
+	loadimage(&bashenhoutui1_,".\\bashen17.bmp");
+	loadimage(&bashenhuibi1,".\\bashen 18.bmp");
+	loadimage(&bashenhuibi1_,".\\bashen18.bmp");
+	loadimage(&bashenpugong21,".\\bashen 19.bmp");
+	loadimage(&bashenpugong21_,".\\bashen19.bmp");
+	loadimage(&bashenpugong22,".\\bashen 20.bmp");
+	loadimage(&bashenpugong22_,".\\bashen20.bmp");
+	loadimage(&bashenpugong23,".\\bashen 21.bmp");
+	loadimage(&bashenpugong23_,".\\bashen21.bmp");
+	loadimage(&bashensanzhao1,".\\bashen 22.bmp");
+	loadimage(&bashensanzhao1_,".\\bashen22.bmp");
+	loadimage(&bashentiaoyue1,".\\bashen 23.bmp");
+	loadimage(&bashentiaoyue1_,".\\bashen23.bmp");
+	loadimage(&bashentiaoyue2,".\\bashen 24.bmp");
+	loadimage(&bashentiaoyue2_,".\\bashen24.bmp");
+	loadimage(&bashentiaoyue3,".\\bashen 25.bmp");
+	loadimage(&bashentiaoyue3_,".\\bashen25.bmp");
+	loadimage(&bashenpugong11,".\\bashen 26.bmp");
+	loadimage(&bashenpugong11_,".\\bashen26.bmp");
+	loadimage(&bashenpugong12,".\\bashen 27.bmp");
+	loadimage(&bashenpugong12_,".\\bashen27.bmp");
+	loadimage(&bashenpugong13,".\\bashen 28.bmp");
+	loadimage(&bashenpugong13_,".\\bashen28.bmp");
+	loadimage(&bashenpugong14,".\\bashen 29.bmp");
+	loadimage(&bashenpugong14_,".\\bashen29.bmp");
+	loadimage(&bashenbaoqi1,".\\bashen 30.bmp");
+	loadimage(&bashenbaoqi1_,".\\bashen30.bmp");
+	loadimage(&bashenbaoqi2,".\\bashen 31.bmp");
+	loadimage(&bashenbaoqi2_,".\\bashen31.bmp");
+	loadimage(&bashenjidao1,".\\bashen 32.bmp");
+	loadimage(&bashenjidao1_,".\\bashen32.bmp");
+	loadimage(&bashenjidao2,".\\bashen 33.bmp");
+	loadimage(&bashenjidao2_,".\\bashen33.bmp");
+	loadimage(&bashenjidao3,".\\bashen 34.bmp");
+	loadimage(&bashenjidao3_,".\\bashen34.bmp");
+	loadimage(&bashenfangshou1,".\\bashen 35.bmp");
+	loadimage(&bashenfangshou1_,".\\bashen35.bmp");
+	loadimage(&bashentiaoyuegai1,".\\bashen 36.bmp");
+	loadimage(&bashentiaoyuegai1_,".\\bashen36.bmp");
+	loadimage(&bashentiaoyuegai2,".\\bashen 37.bmp");
+	loadimage(&bashentiaoyuegai2_,".\\bashen37.bmp");
 	BeginBatchDraw();
 }
 
