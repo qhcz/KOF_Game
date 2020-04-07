@@ -3,20 +3,33 @@
 #include <stdio.h>
 #include <windows.h>
 #include <mmsystem.h>
+#include<time.h>
 #pragma comment(lib,"Winmm.lib")
 
+
+/***********************************************定义全局变量***********************************************************/
 #define high  477  // 游戏画面尺寸
 #define width 691
 #define N 40
 
+int blood1,blood2;//定义两个玩家的初始血量
+int energy1,energy2;//定义两个玩家的初始能量
+int flag;		//定义用于防止闪屏的变量
+int choice;		//定义记录回合的变量
+int result;		//定义掷色子结果的变量
+int position_x,position_y;	//记录P1的位置的变量
+int position_x2,position_y2;//记录P2的位置的变量
+int left,right;			//记录图片遍历时樟树
+int position_y3;		//记录审判之剑的竖直方向坐标
+int bashendazhao,kdazhao;//记录P1和P2大招的有无
+int time1,time2;		//记录玩家使用技能的次数
+int note1,note2;		//用于计算加血数量的变量
 
 
-//定义人物的动作变量
 
-
-//图片定义//
-//开始动画
-	IMAGE start_anime1;
+/****************************************图片定义****************************************/
+	//开始动画
+	IMAGE start_anime1;  
 	IMAGE start_anime2;
 	IMAGE start_anime3;
 	IMAGE start_anime4;
@@ -161,6 +174,14 @@
 	IMAGE bashenpugong14;
 	IMAGE bashenbaoqi1;
 	IMAGE bashenbaoqi2;
+	IMAGE bashenbaoqi21;
+	IMAGE bashenbaoqi22;
+	IMAGE bashenbaoqi23;
+	IMAGE bashenbaoqi24;
+	IMAGE bashenbaoqi25;
+	IMAGE bashenbaoqi26;
+	IMAGE bashenbaoqi27;
+	IMAGE bashenbaoqi28;
 	IMAGE bashenjidao1;
 	IMAGE bashenjidao2;
 	IMAGE bashenjidao3;
@@ -169,7 +190,6 @@
 	IMAGE bashenzhanli2;
 	IMAGE bashenchuchang2;
 	IMAGE bashenxiadun2;
-	IMAGE bashendazhao;
 	IMAGE bashenerzhao;
 	IMAGE bashenqianjin;
 	IMAGE bashenhoutui;
@@ -215,6 +235,14 @@
 	IMAGE bashenpugong14_;
 	IMAGE bashenbaoqi1_;
 	IMAGE bashenbaoqi2_;
+	IMAGE bashenbaoqi21_;
+	IMAGE bashenbaoqi22_;
+	IMAGE bashenbaoqi23_;
+	IMAGE bashenbaoqi24_;
+	IMAGE bashenbaoqi25_;
+	IMAGE bashenbaoqi26_;
+	IMAGE bashenbaoqi27_;
+	IMAGE bashenbaoqi28_;
 	IMAGE bashenjidao1_;
 	IMAGE bashenjidao2_;
 	IMAGE bashenjidao3_;
@@ -275,6 +303,7 @@
 	IMAGE kbaoqi1;
 	IMAGE kbaoqi2;
 	IMAGE kbaoqi3;
+	IMAGE kbaoqi21;
 	IMAGE kjidao1;
 	IMAGE kjidao2;
 	IMAGE kjidao3;
@@ -333,56 +362,434 @@
 	IMAGE kbaoqi1_;
 	IMAGE kbaoqi2_;
 	IMAGE kbaoqi3_;
+	IMAGE kbaoqi21_;
 	IMAGE kjidao1_;
 	IMAGE kjidao2_;
 	IMAGE kjidao3_;
 	IMAGE kfangshou1_;
+	//定义血条,箭头，能量条等标志性图片
+	IMAGE xuetiao1;
+	IMAGE xuetiao2;
+	IMAGE xuetiao3;
+	IMAGE xuetiao4;
+	IMAGE xuetiao5;
+	IMAGE xuetiao6;
+	IMAGE xuetiao7;
+	IMAGE xuetiao8;
+	IMAGE xuetiao9;
+	IMAGE xuetiao10;
+	IMAGE xuetiao11;
+	IMAGE xuetiao12;
+	IMAGE xuetiao13;
+	IMAGE xuetiao14;
+	IMAGE xuetiao15;
+	IMAGE xuetiao16;
+	IMAGE xuetiao17;
+	IMAGE xuetiao18;
+	IMAGE xuetiao19;
+	IMAGE xuetiao20;
+	IMAGE energy_1;
+	IMAGE energy_2;
+	IMAGE energy3;
+	IMAGE energy4;
+	IMAGE energy5;
+	IMAGE energy6;
+	IMAGE energy7;
+	IMAGE energy8;
+	IMAGE energy9;
+	IMAGE energy10;
+	IMAGE energy11;
+	IMAGE energy12;
+	IMAGE energy13;
+	IMAGE energy14;
+	IMAGE energy15;
+	IMAGE energy16;
+	IMAGE energy17;
+	IMAGE energy18;
+	IMAGE energy19;
+	IMAGE energy20;
+	IMAGE siwangshenpan1;
+	IMAGE siwangshenpan2;
+	IMAGE bashensiwang;
+	IMAGE ksiwang;
+	IMAGE bashenshengli;
+	IMAGE kshengli;
+	IMAGE zuojiantou;
+	IMAGE zuojiantou_;
+	IMAGE youjiantou;
+	IMAGE youjiantou_;
+	IMAGE dazhao;
+	IMAGE dazhao_;
+	//加入开头说明的背景，使玩家更易理解游戏玩法
+	IMAGE shuoming1;
+	IMAGE shuoming2;
+	IMAGE shuoming3;
+	IMAGE shuoming4;
+	//加入色子的随机数效果，从而使先手的确定更加公平
+	IMAGE shaizi1;
+	IMAGE shaizi2;
+	IMAGE shaizi3;
+	IMAGE shaizi4;
+	IMAGE shaizi5;
+	IMAGE shaizi6;
+	
+/*******************************************函数声明***************************************************/
 
 
+	void startup();			//游戏初始化（加载图片等等）
+	void gameover();		//游戏结束（结束绘图）
+	void video();			//开始动画播放
+	void bloodshowbashen(int blood1);//显示左侧玩家的血量
+	void bloodshowk(int blood2);	//显示右侧玩家的血量
+	void energyshowbashen(int energy1);//显示左侧玩家的能量
+	void energyshowk(int energy2);//显示右侧玩家的能量
+	void emerge();				//显示出场动画
+	void round(int choice);	//定义显示回合的箭头的函数
+	void bigskill(int bashendazhao,int kdazhao);//添加大招标记
+	int bloodplus(int dazhao,int blood,int time,int note);//回血函数
+	void pictureloading();		//图片加载函数
+	void startvideo();			//开头动画播放函数
+	void start_97();			//拳皇97待定界面播放函数
+	void character_select();	//人物选择界面播放函数
+	void explain();				//游戏玩法及操作说明函数
+	int  first();				//先手判定函数
+	void fighting();			//战斗函数
 
-void startup();			//游戏初始化（加载图片等等）
-void gameover();		//游戏结束（结束绘图）
-void video();			//开始动画播放
+	
 
-int start_video(int stage)		
+void startup()			//初始化函数
 {
-	if(stage==1)
-	{
-		video();
-		EndBatchDraw();
-		stage=2;
-	}
-	return stage;
+
+	blood1=10,blood2=10;//定义两个玩家的初始血量
+	energy1=5,energy2=5;//定义两个玩家的初始能量
+	flag=1;				//用于防止闪屏的变量
+	choice=1;			//任务选择变量
+	result=0;			//掷色子结果变量
+	position_x=0,position_y=high*1.3-255;//P1位置
+	position_x2=width*1.5-200,position_y2=high*1.3-255;//P2位置
+	left=0,right=0;		//遍历图片的初始变量
+	position_y3=0;		//审判之剑纵坐标
+	bashendazhao=0,kdazhao=0;//大招判定
+	time1=0,time2=0;	//技能使用次数判定
+	note1=time1,note2=time2;//加血函数判定
+	initgraph(width,high);
+	pictureloading();//图片加载函数
+	BeginBatchDraw();
+	startvideo();//开头动画播放
+	start_97();	//97画面
+	character_select(); //人物选择画面
+	explain();//玩法说明
+	
 }
 
-int start_97(int stage)
+
+
+void show()//游戏显示
 {
-	if(stage==2)
+	//注：下面之所以将其中一些变量又一次初始化，是因为while循环中只有show函数，没有startup函数为了让玩家可以一直玩下去，因此如此
+	blood1=10,blood2=10;
+	energy1=5,energy2=5;
+	flag=1;
+	choice=1;	
+	result=0;
+	position_x=0,position_y=high*1.3-255;
+	position_x2=width*1.5-200,position_y2=high*1.3-255;
+	left=0,right=0;
+	position_y3=0;
+	bashendazhao=0,kdazhao=0;
+	time1=0,time2=0;
+	note1=time1,note2=time2;
+	first();
+	bloodshowbashen(blood1);
+	bloodshowk(blood2);
+	energyshowbashen(energy1);
+	energyshowk(energy2);
+	round(choice);
+	bigskill(bashendazhao,kdazhao);		
+}
+
+
+void updataWithoutInput()//用户无关设置
+{
+	bloodplus(bashendazhao,blood1,time1,note1);//P1加血函数
+	bloodplus(kdazhao,blood2,time2,note2);//P2加血函数
+}
+
+
+
+void updataWithInput()//用户有关设置
+{
+	fighting();//战斗
+}
+
+
+void gameover()
+{
+	EndBatchDraw();
+	closegraph();	
+}
+
+
+int main()
+{
+	startup();//数据初始化
+	while(1)//游戏循环 
 	{
+		show();//游戏显示 
+		updataWithoutInput();//用户无关设置 
+		updataWithInput(); //用户有关设置 
+	} 
+	gameover();
+	return 0; 
+} 
+
+
+/**************************************一些功能函数******************************************/ 
+
+
+void bloodshowbashen(int blood1)//P1的血量显示函数，共有十滴血，通过blood1的多少进行判定从而显示对应的图片
+{	
+	if(blood1==1)
+	{
+		putimage(5,5,&xuetiao1);
+	}
+	if(blood1==2)
+	{
+		putimage(5,5,&xuetiao2);
+	}
+	if(blood1==3)
+	{
+		putimage(5,5,&xuetiao3);
+	}
+	if(blood1==4)
+	{
+		putimage(5,5,&xuetiao4);
+	}
+	if(blood1==5)
+	{
+		putimage(5,5,&xuetiao5);
+	}
+	if(blood1==6)
+	{
+		putimage(5,5,&xuetiao6);
+	}
+	if(blood1==7)
+	{
+		putimage(5,5,&xuetiao7);
+	}
+	if(blood1==8)
+	{
+		putimage(5,5,&xuetiao8);
+	}
+	if(blood1==9)
+	{
+		putimage(5,5,&xuetiao9);
+	}
+	if(blood1>=10)
+	{
+		putimage(5,5,&xuetiao10);
+	}
+}
+
+
+void bloodshowk(int blood2)//P2的血量显示函数，共有十滴血，通过blood2的多少进行判定从而显示对应的图片
+{
+
+	if(blood2==1)
+	{
+		putimage(600,5,&xuetiao11);
+	}
+	if(blood2==2)
+	{
+		putimage(600,5,&xuetiao12);
+	}
+	if(blood2==3)
+	{
+		putimage(600,5,&xuetiao13);
+	}
+	if(blood2==4)
+	{
+		putimage(600,5,&xuetiao14);
+	}
+	if(blood2==5)
+	{
+		putimage(600,5,&xuetiao15);
+	}
+	if(blood2==6)
+	{
+		putimage(600,5,&xuetiao16);
+	}
+	if(blood2==7)
+	{
+		putimage(600,5,&xuetiao17);
+	}
+	if(blood2==8)
+	{
+		putimage(600,5,&xuetiao18);
+	}
+	if(blood2==9)
+	{
+		putimage(600,5,&xuetiao19);
+	}
+	if(blood2>=10)
+	{
+		putimage(600,5,&xuetiao20);
+	}
+}
+
+
+void energyshowbashen(int energy1)//P1的能量函数，共有十个能量，通过energy1的多少进行判定从而显示对应的图片
+{
+	if(energy1<=1)
+	{
+		putimage(5,40,&energy_1);
+	}
+	if(energy1==2)
+	{
+		putimage(5,40,&energy_2);
+	}
+	if(energy1==3)
+	{
+		putimage(5,40,&energy3);
+	}
+	if(energy1==4)
+	{
+		putimage(5,40,&energy4);
+	}
+	if(energy1==5)
+	{
+		putimage(5,40,&energy5);
+	}
+	if(energy1==6)
+	{
+		putimage(5,40,&energy6);
+	}
+	if(energy1==7)
+	{
+		putimage(5,40,&energy7);
+	}
+	if(energy1==8)
+	{
+		putimage(5,40,&energy8);
+	}
+	if(energy1==9)
+	{
+		putimage(5,40,&energy9);
+	}
+	if(energy1>=10)
+	{
+		putimage(5,40,&energy10);
+	}
+}
+
+
+void energyshowk(int energy2)//P2的能量函数，共有十个能量，通过energy2的多少进行判定从而显示对应的图片
+{
+	if(energy2<=1)
+	{
+		putimage(600,40,&energy11);
+	}
+	if(energy2==2)
+	{
+		putimage(600,40,&energy12);
+	}
+	if(energy2==3)
+	{
+		putimage(600,40,&energy13);
+	}
+	if(energy2==4)
+	{
+		putimage(600,40,&energy14);
+	}
+	if(energy2==5)
+	{
+		putimage(600,40,&energy15);
+	}
+	if(energy2==6)
+	{
+		putimage(600,40,&energy16);
+	}
+	if(energy2==7)
+	{
+		putimage(600,40,&energy17);
+	}
+	if(energy2==8)
+	{
+		putimage(600,40,&energy18);
+	}
+	if(energy2==9)
+	{
+		putimage(600,40,&energy19);
+	}
+	if(energy2>=10)
+	{
+		putimage(600,40,&energy20);
+	}
+}
+
+
+void round(int choice)//判定是谁的回合从而显示对应箭头的方向
+{
+	if(choice==1)//如果choice=1，则是P1的回合
+	{
+		putimage(380,30,255,194,&zuojiantou_,0,0,SRCAND);//显示左箭头
+		putimage(380,30,255,194,&zuojiantou,0,0,SRCPAINT);
+	}
+	if(choice==2)//如果choice=2，则是P2的回合
+	{
+		putimage(380,30,255,194,&youjiantou_,0,0,SRCAND);//显示右箭头
+		putimage(380,30,255,194,&youjiantou,0,0,SRCPAINT);
+	}
+}
+
+
+void bigskill(int bashendazhao,int kdazhao)//显示大招有无的函数
+{
+	if(bashendazhao==1)//判定P1大招的有无
+	{
+		putimage(30,70,30,20,&dazhao_,0,0,SRCAND);//在P1的血条下方显示标记
+		putimage(30,70,30,20,&dazhao,0,0,SRCPAINT);
+	}
+	if(kdazhao==1)
+	{
+		putimage(width*1.5-120,70,30,20,&dazhao_,0,0,SRCAND);//在P2的血条下方显示标记
+		putimage(width*1.5-120,70,30,20,&dazhao,0,0,SRCPAINT);
+	}
+}
+
+
+int bloodplus(int dazhao,int blood,int time,int note)//加血函数
+{
+	if(dazhao==1)//通过传入bashendazhao，和kdazhao，如果为1则每回合加一滴血，否则不加
+	{
+		blood=blood+time-note;
+	}
+	return blood;
+}
+
+
+void start_97()			//97界面
+{
 		char input;
 		input=getch();
 		while(1)
 		{
-			putimage(0,0,&start97);
+			putimage(0,0,&start97);	//载入97界面的图片
 			Sleep(N);
 			FlushBatchDraw();
 			if(input=='j')			//按下j键进入下一个阶段
 				break;	
 		}
 		EndBatchDraw();
-		stage=3;
-	}
-
-	return stage;
+	
 }
 
-int character_select(int stage)
-{
-	int select_x=47;				//选人光标初始位置
-	int select_y=40;
 
-	if(stage==3)
-	{
+void character_select()		//人物选择函数
+{
+	int select_x=47;				//选人光标初始位置横坐标
+	int select_y=40;				//选人光标初始位置纵坐标
+
 		char input;
 		int a=1;		//用于左右选人时的跳跃判定
 		int b=1;		//用于上下选人时的跳跃判定
@@ -391,10 +798,14 @@ int character_select(int stage)
 			if(kbhit())
 			{
 				input=getch();
-				putimage(0,0,&select1);
+				putimage(0,0,&select1);		//人物大背景图
+				putimage(select_x,select_y,&cursor1,SRCAND);//选人方框
+				putimage(select_x,select_y,&cursor2,SRCPAINT);
+				FlushBatchDraw();
 				if(input=='j')			//按下j键进入下一个阶段
 					break;	
-				else if(input=='d' && select_x<570)
+				//以下内容中的判定部分是因为背景图片上的人物并不是一个正方形的图按
+				else if(input=='d' && select_x<570)//按下D键方框向右移动
 				{
 					if(a==3 || a==6)
 					{
@@ -415,7 +826,7 @@ int character_select(int stage)
 						a++;
 					}	
 				}	
-				else if(input=='a' && select_x>47)
+				else if(input=='a' && select_x>47)//按下A键方框向左移动
 				{
 					if(a==4 || a==7)
 					{
@@ -438,7 +849,7 @@ int character_select(int stage)
 				}
 				else if(a==4 || a==6)
 				{
-					if(input=='s' && select_y<300)
+					if(input=='s' && select_y<300)//按下S键方框向左移动
 					{
 						if(b==1)
 						{
@@ -451,7 +862,7 @@ int character_select(int stage)
 							b++;
 						}
 					}
-					else if(input=='w' && select_y>50)
+					else if(input=='w' && select_y>50)//按下W键方框向左移动
 					{
 						if(b==2)
 						{
@@ -464,7 +875,6 @@ int character_select(int stage)
 							b--;
 						}
 					}
-
 				}
 				else
 				{
@@ -474,36 +884,127 @@ int character_select(int stage)
 						select_y=select_y-73;
 				}
 			}
-			putimage(select_x,select_y,&cursor1,SRCAND);
-			putimage(select_x,select_y,&cursor2,SRCPAINT);
-			FlushBatchDraw();
 		}
 		EndBatchDraw();
-		stage=4;
-	}
-
-	return stage;
 }
 
 
-int fighting(int stage)
+void explain()
 {	
-
-	int position_x=0,position_y=high*1.3-255;
-	int position_x2=width*1.5-200,position_y2=high*1.3-255;
-	int left=0,right=0;
-	int x=0,y=0;
 	char input;
-	int key,key2;
-	closegraph();
+	int sign=1;//定义变量使得在四张说明图片放完后可以跳出函数进入下一个阶段
 	initgraph(width*1.5,high*1.3);
+	if(sign==1)
+	{
+		input=getch();
+		if(input=='j')//按下J依次播放说明图片
+		putimage(0,0,&shuoming1);	
+		input=getch();
+		if(input=='j')
+		putimage(0,0,&shuoming2);
+		input=getch();
+		if(input=='j')
+		putimage(0,0,&shuoming3);
+		input=getch();
+		if(input=='j')
+		putimage(0,0,&shuoming4);
+		input=getch();
+		if(input=='j')
+		sign=0;	//sign=0，跳出说明界面
+	}
+
+}
+
+
+int first()
+{
 	putimage(0,0,&bk);
-	int i,k;
+	int i=1;
 	
-	for(i=0;(i<12 && kbhit()!=1);i++)
+	char input;
+	srand ( (unsigned) time (NULL) );	//这是一个很有用的语句，防止伪随机数，需要种下“种子”
+	while(result>6||result<=0)		
+	{
+		result=rand()%7;		//进行随机，选出0-6中的一个任意数
+	}
+	
+	input=getch();
+	if(input=='j')		//按下J键播放色子随机的动画
+	{
+		for(i=1;i<=6;i++)
+		{
+			putimage(500,310,&shaizi1);
+			Sleep(50);
+			putimage(500,310,&shaizi2);
+			Sleep(50);
+			putimage(500,310,&shaizi3);
+			Sleep(50);
+			putimage(500,310,&shaizi4);
+			Sleep(50);
+			putimage(500,310,&shaizi5);
+			Sleep(50);
+			putimage(500,310,&shaizi6);
+			Sleep(50);
+		}
+	}	
+		//播放完动画之后按照上面得到的0-6的随机数，显示对应色子点数的图片
+		if(result==1)
+		{
+			putimage(500,310,&shaizi1);
+			choice=1;
+		}
+		if(result==2)
+		{
+			putimage(500,310,&shaizi2);
+			choice=1;
+		}
+		if(result==3)
+		{
+			putimage(500,310,&shaizi3);
+			choice=1;
+		}
+		if(result==4)
+		{
+			putimage(500,310,&shaizi4);
+			choice=2;
+		}
+		if(result==5)
+		{
+			putimage(500,310,&shaizi5);
+			choice=2;
+		}
+		if(result==6)
+		{
+			putimage(500,310,&shaizi6);
+			choice=2;
+		}
+			
+	input=getch();
+	if(input=='j')	//再次按下J键，跳出该环节，进入下一个函数
+	{
+		return 0;
+	}
+	return 0;
+}
+
+/**************************************战斗函数****************************************/ 
+
+void fighting()		//战斗函数
+{	
+	char input;		//用于记录键入的字符
+	int sign=1;		//防止闪屏的变量
+	initgraph(width*1.5,high*1.3);//开一个更大的画布
+	putimage(0,0,&bk);//放置背景
+	fillrectangle(10,0,60,20);
+	int i,k;
+	//播放P1，P2的出场动画
+		for(i=0;(i<12 && kbhit()!=1);i++)
 	{	
-		clearrectangle(position_x,0,position_x+200,position_y+255);
 		putimage(0,0,&bk);
+		bloodshowbashen(blood1);
+		bloodshowk(blood2);
+		energyshowbashen(energy1);
+		energyshowk(energy2);
 		putimage(0,position_y,200,255,&bashenchuchang1_,i*200,0,SRCAND);
 		putimage(0,position_y,200,255,&bashenchuchang1,i*200,0,SRCPAINT);
 		Sleep(N);
@@ -511,8 +1012,11 @@ int fighting(int stage)
 	}
 	for(i=9;(i>=0 && kbhit()!=1);i--)
 	{	
-		clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
 		putimage(0,0,&bk);
+		bloodshowbashen(blood1);
+		bloodshowk(blood2);
+		energyshowbashen(energy1);
+		energyshowk(energy2);
 		putimage(position_x2,position_y2,200,255,&kchuchang4_,i*200,0,SRCAND);
 		putimage(position_x2,position_y2,200,255,&kchuchang4,i*200,0,SRCPAINT);
 		Sleep(N);
@@ -520,8 +1024,11 @@ int fighting(int stage)
 	}
 	for(i=9;(i>=0 && kbhit()!=1);i--)
 	{	
-		clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
 		putimage(0,0,&bk);
+		bloodshowbashen(blood1);
+		bloodshowk(blood2);
+		energyshowbashen(energy1);
+		energyshowk(energy2);
 		putimage(position_x2,position_y2,200,255,&kchuchang3_,i*200,0,SRCAND);
 		putimage(position_x2,position_y2,200,255,&kchuchang3,i*200,0,SRCPAINT);
 		Sleep(N);
@@ -529,8 +1036,11 @@ int fighting(int stage)
 	}
 	for(i=9;(i>=0 && kbhit()!=1);i--)
 	{	
-		clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
 		putimage(0,0,&bk);
+		bloodshowbashen(blood1);
+		bloodshowk(blood2);
+		energyshowbashen(energy1);
+		energyshowk(energy2);
 		putimage(position_x2,position_y2,200,255,&kchuchang2_,i*200,0,SRCAND);
 		putimage(position_x2,position_y2,200,255,&kchuchang2,i*200,0,SRCPAINT);
 		Sleep(N);
@@ -538,991 +1048,1777 @@ int fighting(int stage)
 	}
 	for(i=9;(i>=0 && kbhit()!=1);i--)
 	{	
-		clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
 		putimage(0,0,&bk);
+		bloodshowbashen(blood1);
+		bloodshowk(blood2);
+		energyshowbashen(energy1);
+		energyshowk(energy2);
 		putimage(position_x2,position_y2,200,255,&kchuchang1_,i*200,0,SRCAND);
 		putimage(position_x2,position_y2,200,255,&kchuchang1,i*200,0,SRCPAINT);
 		Sleep(N);
 		FlushBatchDraw();
 	}
-	while(1)
+	//进入战斗循环
+	while(flag==1)//当flag=1的时候会在战斗中，这样就可以保障即使其中一方已经死亡也不会一直进行循环
 	{
-	//添加左侧玩家控制人物的各项动作
-		if(kbhit()==0)
-		{	
-		
-				for(i=0;i<9;i++)
+	while(sign==1)//用与死亡判定的变量，当sign=1的时候可以战斗，若其中一方死亡，sign=0，之后会跳出这个while循环，从而播放胜利结算
+	{
+			blood1=bloodplus(bashendazhao,blood1,time1,note1);//P1加血
+			blood2=bloodplus(kdazhao,blood2,time2,note2);	//P2加血
+			note1=time1;
+			note2=time2;
+			if(blood1<=0)//判定P1已经死亡
 			{
-				clearrectangle(0,0,691,477);
-				putimage(0,0,&bk);
-				putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
-				putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
-				putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-				putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-				FlushBatchDraw();
-				Sleep(80);
-			}
-				
-		}
-
-
-		if(kbhit()!=0)
-			{
-		
-			input=getch();
-				
-			
-			//Sleep(N);	
-				if((GetAsyncKeyState(0x41)&0x8000))		//实现八神的后退(左移)动作 a
+					if(position_y3<=high*1.3-380)
 				{
-				
-					for(i=0;i<6;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+150,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x>=0)	
-						{
-							position_x=position_x-20;
-						}
-						putimage(position_x,position_y,150,255,&bashenhoutui1_,i*150,0,SRCAND);
-						putimage(position_x,position_y,150,255,&bashenhoutui1,i*150,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(50);
-						FlushBatchDraw();
-					}
-				}
-				if(GetAsyncKeyState(0x51)&0x8000)			//实现八神的快速后退 q
+					for(i=0;i<10;i++)
 				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
 					putimage(0,0,&bk);
-					if(position_x>=0)
-					{
-						position_x=position_x-20;
-					}
-					left++;
-					putimage(position_x,position_y,200,255,&bashenhoutui1_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashenhoutui1,left*200,0,SRCPAINT);
+					bloodshowbashen(blood1);
+					bloodshowk(blood2);
+					energyshowbashen(energy1);
+					energyshowk(energy2);
+					round(choice);	
+					putimage(position_x,position_y,150,170,&bashenjidao1_,i*150,0,SRCAND);//播放P1到底画面
+					putimage(position_x,position_y,150,170,&bashenjidao1,i*150,0,SRCPAINT);
+					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);//播放k站立动画
+					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+					putimage(position_x,position_y3,200,400,&siwangshenpan2,0,0,SRCAND);//播放审判之剑
+					putimage(position_x,position_y3,200,400,&siwangshenpan1,0,0,SRCPAINT);	
+					FlushBatchDraw();
+					Sleep(40);
+					position_y3=position_y3+10;
+				}
+					for(i=0;i<10;i++)
+				{
+					putimage(0,0,&bk);
+					bloodshowbashen(blood1);
+					bloodshowk(blood2);
+					energyshowbashen(energy1);
+					energyshowk(energy2);
+					round(choice);	
+					putimage(position_x,position_y+75,200,100,&bashenjidao2_,i*200,0,SRCAND);
+					putimage(position_x,position_y+75,200,100,&bashenjidao2,i*200,0,SRCPAINT);
+					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+					putimage(position_x,position_y3,200,400,&siwangshenpan2,0,0,SRCAND);
+					putimage(position_x,position_y3,200,400,&siwangshenpan1,0,0,SRCPAINT);		
+					FlushBatchDraw();
+					Sleep(40);
+					position_y3=position_y3+10;
+				}
+					for(i=0;i<10;i++)
+				{
+					putimage(0,0,&bk);
+					bloodshowbashen(blood1);
+					bloodshowk(blood2);
+					energyshowbashen(energy1);
+					energyshowk(energy2);
+					round(choice);	
+					putimage(position_x,position_y+150,200,100,&bashenjidao3_,i*200,0,SRCAND);
+					putimage(position_x,position_y+150,200,100,&bashenjidao3,i*200,0,SRCPAINT);
+					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+					putimage(position_x,position_y3,200,400,&siwangshenpan2,0,0,SRCAND);
+					putimage(position_x,position_y3,200,400,&siwangshenpan1,0,0,SRCPAINT);
+					FlushBatchDraw();
+					Sleep(40);
+					position_y3=position_y3+10;
+				}
+				}
+				sign=0;	//让sign=0
+			}
+			if(blood2<=0)//判定P2已经死亡
+			{
+				if(position_y3<=high*1.3-450)
+				{
+				for(i=0;i<10;i++)
+				{
+					putimage(0,0,&bk);
+					bloodshowbashen(blood1);
+					bloodshowk(blood2);	
+					energyshowbashen(energy1);
+					energyshowk(energy2);
+					round(choice);	
+					putimage(position_x2,position_y2,200,100,&kjidao1_,i*200,0,SRCAND);//播放K击倒画面
+					putimage(position_x2,position_y2,200,100,&kjidao1,i*200,0,SRCPAINT);
+					putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);//播放八神站立动画
+					putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+					putimage(position_x2,position_y3,200,400,&siwangshenpan2,0,0,SRCAND);//播放审判之剑
+					putimage(position_x2,position_y3,200,400,&siwangshenpan1,0,0,SRCPAINT);
+					FlushBatchDraw();
+					Sleep(80);
+					position_y3=position_y3+15;
+				}
+				for(i=0;i<10;i++)
+				{
+					putimage(0,0,&bk);
+					bloodshowbashen(blood1);
+					bloodshowk(blood2);	
+					energyshowbashen(energy1);
+					energyshowk(energy2);
+					round(choice);	
+					putimage(position_x2,position_y2+150,200,100,&kjidao2_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2+150,200,100,&kjidao2,i*200,0,SRCPAINT);
+					putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+					putimage(position_x2,position_y3,200,400,&siwangshenpan2,0,0,SRCAND);
+					putimage(position_x2,position_y3,200,400,&siwangshenpan1,0,0,SRCPAINT);
+					FlushBatchDraw();
+					Sleep(80);
+					position_y3=position_y3+15;
+				}
+		
+				}
+				sign=0;//让sign=0
+			}
+			if(kbhit()==0&&sign==1)
+			{	
+				//循环播放两者初始状态
+				for(i=0;i<9;i++)
+				{
+					putimage(0,0,&bk);
+					bloodshowbashen(blood1);
+					bloodshowk(blood2);
+					energyshowbashen(energy1);
+					energyshowk(energy2);
+					round(choice);	
+					putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+					putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
 					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
 					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 					FlushBatchDraw();
-					if(left==9)
-						left=0;	
-
+					Sleep(80);
 				}
-				
-				
-				if(GetAsyncKeyState(0x44)&0x8000)		//实现八神的前进 d
-				{
 					
-					for(i=0;i<10;i++)
+			}
+			if(kbhit()!=0&&sign==1)
+				{
+			
+				input=getch();
+					
+
+				if(choice==1)
+				{
+
+					if((GetAsyncKeyState(0x41)&0x8000))		//实现八神的后退(左移)动作 a
 					{
-						clearrectangle(position_x,position_y,position_x+150,position_y+255);
+					
+						for(i=0;i<6;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x>=0)	
+							{
+								position_x=position_x-20;
+							}
+							putimage(position_x,position_y,150,255,&bashenhoutui1_,i*150,0,SRCAND);
+							putimage(position_x,position_y,150,255,&bashenhoutui1,i*150,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+					}
+				
+					
+					if(GetAsyncKeyState(0x44)&0x8000)		//实现八神的前进 d
+					{
+						
+						for(i=0;i<7;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+							position_x=position_x+20;
+							}	
+							putimage(position_x,position_y,300,255,&bashenbenpao1_,i*300,0,SRCAND);
+							putimage(position_x,position_y,300,255,&bashenbenpao1,i*300,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}				
+					}
+				
+					if(GetAsyncKeyState(0x53)&0x8000)		//实现八神的下蹲 s
+					{
+						for(i=0;i<6;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							putimage(position_x,position_y+70,167,180,&bashenxiadun1_,i*167,0,SRCAND);
+							putimage(position_x,position_y+70,167,180,&bashenxiadun1,i*167,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						} 
+						for(i=0;i<9;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+
+					}
+					
+					if(GetAsyncKeyState(0x4B)&0x8000)		//实现八神的跳跃 k
+					{
+						for(i=0;i<8;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_y>=0)
+							{
+								position_y=position_y-35;
+							}
+							putimage(position_x,position_y,200,255,&bashentiaoyuegai1_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashentiaoyuegai1,i*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+						for(i=0;i<5;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_y<=high*1.5)
+							{
+								position_y=position_y+56;
+							}
+							putimage(position_x,position_y,200,255,&bashentiaoyuegai2_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashentiaoyuegai2,i*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+
+					
+					}
+					if((GetAsyncKeyState(0x4F)&0x8000)&&(energy1>=3))	//实现八神的三招o
+					{
+						choice=2;
+						energy1=energy1-3;
+						time1++;
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							putimage(position_x,position_y,200,255,&bashenbaoqi1_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenbaoqi1,i*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							putimage(position_x,position_y,200,255,&bashenbaoqi2_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenbaoqi2,i*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+						position_x=0;
+						position_y=high*1.3-255;
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,SRCPAINT);
+						if((position_x+200>=position_x2)&&(position_y==position_y2))
+						{
+								blood2=blood2-3;
+						}
+						position_x=0;
+						position_y=high*1.3-255;
+					}
+		
+					if((GetAsyncKeyState(0x55)&0x8000)&&(bashendazhao==1))		//实现八神的大招 u
+					{
+						choice=2;
+						bashendazhao=0;
+						time1++;
+						for(i=0;i<10;i++)
+						{
 						putimage(0,0,&bk);
+						bloodshowbashen(blood1);
+						bloodshowk(blood2);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
 						if(position_x<=position_x2-165)
 						{
-						position_x=position_x+20;
-						}	
-						putimage(position_x,position_y,150,255,&bashenqianjin1_,i*150,0,SRCAND);
-						putimage(position_x,position_y,150,255,&bashenqianjin1,i*150,0,SRCPAINT);
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,200,255,&bashendazhao1_,left*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashendazhao1,left*200,0,SRCPAINT);
 						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
 						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(50);
+						Sleep(N);
 						FlushBatchDraw();
-					}				
+						if(left==10)
+							left=0;
+						}
+						
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							left++;
+							putimage(position_x,position_y,200,255,&bashendazhao2_,left*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashendazhao2,left*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(N);
+							FlushBatchDraw();
+							if(left==10)
+								left=0;
+						}
+
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							left++;
+							putimage(position_x,position_y,200,255,&bashendazhao3_,left*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashendazhao3,left*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(N);
+							FlushBatchDraw();
+							if(left==10)
+								left=0;
+						}
+		
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							left++;
+							putimage(position_x,position_y,155,255,&bashendazhao4_,left*200,0,SRCAND);
+							putimage(position_x,position_y,155,255,&bashendazhao4,left*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(N);
+							if(left==10)
+								left=0;
+						}
+
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							left++;
+							putimage(position_x,position_y,155,255,&bashendazhao5_,left*200,0,SRCAND);
+							putimage(position_x,position_y,155,255,&bashendazhao5,left*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(N);
+							FlushBatchDraw();
+							if(left==10)
+								left=0;
+						}
+		
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							left++;
+							putimage(position_x,position_y,155,255,&bashendazhao6_,left*200,0,SRCAND);
+							putimage(position_x,position_y,155,255,&bashendazhao6,left*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(N);
+							FlushBatchDraw();
+							if(left==10)
+								left=0;
+						}
+		
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							left++;
+							putimage(position_x,position_y,155,255,&bashendazhao7_,left*200,0,SRCAND);
+							putimage(position_x,position_y,155,255,&bashendazhao7,left*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(N);
+							FlushBatchDraw();
+							if(left==10)
+								left=0;
+						}
+		
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							left++;
+							putimage(position_x,position_y,155,255,&bashendazhao8_,left*200,0,SRCAND);
+							putimage(position_x,position_y,155,255,&bashendazhao8,left*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(N);
+							FlushBatchDraw();
+							if(left==10)
+								left=0;
+						}
+
+						for(i=0;i<10;i++)
+						{
+
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							left++;
+							putimage(position_x,position_y,200,255,&bashendazhao9_,left*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashendazhao9,left*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(N);
+							FlushBatchDraw();
+							if(left==7)
+								left=0;
+						}
+							left=0;
+						if((position_x+200>=position_x2)&&(position_y==position_y2))
+						{
+								blood2=blood2-5;
+								for(i=0;i<10;i++)//当P1释放大招的时候P2会有一个击倒的效果
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x2,position_y2,200,255,&kjidao1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kjidao1,i*200,0,SRCPAINT);
+								putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+								putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+								for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x2,position_y2,200,255,&kjidao2_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kjidao2,i*200,0,SRCPAINT);
+								putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+								putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+								for(i=0;i<4;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x2,position_y2,200,255,&kjidao3_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kjidao3,i*200,0,SRCPAINT);
+								putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+								putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+						}
+						position_x=0;
+						position_y=high*1.3-255;
+					}
+					if((GetAsyncKeyState(0x49)&0x8000)&&(energy1>=5))		//实现八神的二招 i
+					{
+						choice=2;
+						energy1=energy1-5;
+						time1++;
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							putimage(position_x,position_y,200,255,&bashenerzhao1_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenerzhao1,i*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+							for(i=0;i<9;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowbashen(blood1);
+							bloodshowk(blood2);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							putimage(position_x,position_y,200,255,&bashenerzhao2_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenerzhao2,i*200,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+							if((position_x+200>=position_x2)&&(position_y==position_y2))
+						{
+							blood2=blood2-4;
+						}
+						position_x=0;
+						position_y=high*1.3-255;
+					}
+					if((GetAsyncKeyState(0x48)&0x8000)&&(energy1>=10))		//按下H键，八神爆气
+					{
+						choice=2;
+						energy1=1;
+						bashendazhao=1;
+						time1++;
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x,position_y,250,300,&bashenbaoqi21_,i*250,0,SRCAND);
+								putimage(position_x,position_y,250,300,&bashenbaoqi21,i*250,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x,position_y,250,300,&bashenbaoqi22_,i*250,0,SRCAND);
+								putimage(position_x,position_y,250,300,&bashenbaoqi22,i*250,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x,position_y,250,300,&bashenbaoqi23_,i*250,0,SRCAND);
+								putimage(position_x,position_y,250,300,&bashenbaoqi23,i*250,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x,position_y,250,300,&bashenbaoqi24_,i*250,0,SRCAND);
+								putimage(position_x,position_y,250,300,&bashenbaoqi24,i*250,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x,position_y,250,300,&bashenbaoqi25_,i*250,0,SRCAND);
+								putimage(position_x,position_y,250,300,&bashenbaoqi25,i*250,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x,position_y,250,300,&bashenbaoqi26_,i*250,0,SRCAND);
+								putimage(position_x,position_y,250,300,&bashenbaoqi26,i*250,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x,position_y,250,300,&bashenbaoqi27_,i*250,0,SRCAND);
+								putimage(position_x,position_y,250,300,&bashenbaoqi27,i*250,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								putimage(position_x,position_y,250,300,&bashenbaoqi28_,i*250,0,SRCAND);
+								putimage(position_x,position_y,250,300,&bashenbaoqi28,i*250,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(50);
+								FlushBatchDraw();
+							}
+							position_x=0;
+							position_y=high*1.3-255;
+					}
+					if(GetAsyncKeyState(0x4A)&0x8000)		//实现八神的普攻 j
+					{	
+						choice=2;
+						energy1=energy1+3;
+						time1++;
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								if(position_x<=position_x2-165)
+								{
+									position_x=position_x+5;
+								}
+								putimage(position_x,position_y,150,255,&bashenpugong11_,i*150,0,SRCAND);
+								putimage(position_x,position_y,150,255,&bashenpugong11,i*150,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(40);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								if(position_x<=position_x2-165)
+								{
+									position_x=position_x+5;
+								}
+								putimage(position_x,position_y,150,255,&bashenpugong12_,i*150,0,SRCAND);
+								putimage(position_x,position_y,150,255,&bashenpugong12,i*150,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(40);
+								FlushBatchDraw();
+							}
+							for(i=0;i<10;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								if(position_x<=position_x2-165)
+								{
+									position_x=position_x+5;
+								}
+								putimage(position_x,position_y,150,255,&bashenpugong13_,i*150,0,SRCAND);
+								putimage(position_x,position_y,150,255,&bashenpugong13,i*150,0,SRCPAINT);
+								putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+								putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+								Sleep(40);
+								FlushBatchDraw();
+							}
+							for(i=0;i<4;i++)
+							{
+								putimage(0,0,&bk);
+								bloodshowbashen(blood1);
+								bloodshowk(blood2);
+								energyshowbashen(energy1);
+								energyshowk(energy2);
+								round(choice);
+								bigskill(bashendazhao,kdazhao);
+								if(position_x<=position_x2-165)
+								{
+									position_x=position_x+5;
+								}
+								putimage(position_x,position_y,150,255,&bashenpugong14_,i*150,0,SRCAND);
+								putimage(position_x,position_y,150,255,&bashenpugong14,i*150,0,SRCPAINT);
+								Sleep(40);
+								FlushBatchDraw();
+							}
+							if((position_x+200>=position_x2)&&(position_y==position_y2))
+							{
+								blood2=blood2-1;
+							}
+							position_x=0;
+							position_y=high*1.3-255;
+					}
 				}
-			
-				if(GetAsyncKeyState(0x53)&0x8000)		//实现八神的下蹲 s
+				//导入右侧玩家控制的人物的动作
+				if(choice==2)
 				{
-					for(i=0;i<6;i++)
+
+					if(GetAsyncKeyState(VK_LEFT)&0x8000)		//实现k的前进
 					{
-						clearrectangle(position_x,position_y,position_x+167,position_y+180);
-						putimage(0,0,&bk);
-						putimage(position_x,position_y+70,167,180,&bashenxiadun1_,i*167,0,SRCAND);
-						putimage(position_x,position_y+70,167,180,&bashenxiadun1,i*167,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(50);
-						FlushBatchDraw();
-					} 
-					for(i=0;i<9;i++)
+						for(i=0;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowk(blood2);
+							bloodshowbashen(blood1);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x2>=position_x+200)	
+							{
+								position_x2=position_x2-15;
+							}
+							putimage(position_x2,position_y2,200,255,&kqianjin1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kqianjin1,i*200,0,SRCPAINT);
+							putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+							for(i=0;i<5;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowk(blood2);
+							bloodshowbashen(blood1);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							if(position_x2>=position_x+200)	
+							{
+								position_x2=position_x2-15;
+							}
+							putimage(position_x2,position_y2,200,255,&kqianjin2_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kqianjin2,i*200,0,SRCPAINT);
+							putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+				}
+				if(GetAsyncKeyState(VK_RIGHT)&0x8000)		//实现k的后退
+				{
+						for(i=5;i<10;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowk(blood2);
+							bloodshowbashen(blood1);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							position_x2=position_x2+15;
+							putimage(position_x2,position_y2,200,255,&kqianjin2_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kqianjin2,i*200,0,SRCPAINT);
+							putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+						for(i=5;i<11;i++)
+						{
+							putimage(0,0,&bk);
+							bloodshowk(blood2);
+							bloodshowbashen(blood1);
+							energyshowbashen(energy1);
+							energyshowk(energy2);
+							round(choice);
+							bigskill(bashendazhao,kdazhao);
+							position_x2=position_x2+15;
+							putimage(position_x2,position_y2,200,255,&kqianjin3_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kqianjin3,i*200,0,SRCPAINT);
+							putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+							putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+				}
+				if(GetAsyncKeyState(VK_UP)&0x8000)			//实现k的跳跃
+				{	
+					for(i=0;i<7;i++)
 					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_y2>=0)	
+						{
+							position_y2=position_y2-30;
+						}
+						putimage(position_x2,position_y2,200,255,&ktiaoyue2_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&ktiaoyue2,i*200,0,SRCPAINT);
 						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
 						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
-
-				}
-				
-				if(GetAsyncKeyState(0x4B)&0x8000)		//实现八神的跳跃 k
-				{
-					for(i=0;i<8;i++)
+					for(i=5;i<12;i++)
 					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
-						if(position_y>=0)
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_y2<=high*1.3-255)	
 						{
-							position_y=position_y-35;
+							position_y2=position_y2+30;
 						}
-						putimage(position_x,position_y,200,255,&bashentiaoyuegai1_,i*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashentiaoyuegai1,i*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(50);
-						FlushBatchDraw();
-					}
-					for(i=0;i<5;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_y<=high*1.5)
-						{
-							position_y=position_y+56;
-						}
-						putimage(position_x,position_y,200,255,&bashentiaoyuegai2_,i*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashentiaoyuegai2,i*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(50);
-						FlushBatchDraw();
-					}
-
-				
-				}
-				if(GetAsyncKeyState(0x4F)&0x8000)		//实现八神的爆气 o
-				{
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						putimage(position_x,position_y,200,255,&bashenbaoqi1_,i*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashenbaoqi1,i*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(50);
-						FlushBatchDraw();
-					}
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						putimage(position_x,position_y,200,255,&bashenbaoqi2_,i*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashenbaoqi2,i*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(50);
-						FlushBatchDraw();
-					}
-				
-				}
-				if(GetAsyncKeyState(0x4C)&0x8000)		//实现八神的快速奔跑 l
-				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					left++;
-					position_x=position_x+20;
-					putimage(position_x,position_y,200,255,&bashenbenpao1_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashenbenpao1,left*200,0,SRCPAINT);
-					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-					FlushBatchDraw();
-					if(left==8)
-						left=0;		
-				}
-				if(GetAsyncKeyState(0x55)&0x8000)		//实现八神的大招 u
-				{
-					for(i=0;i<10;i++)
-					{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=position_x2-165)
-					{
-						position_x=position_x+5;
-					}
-					left++;
-					putimage(position_x,position_y,200,255,&bashendazhao1_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashendazhao1,left*200,0,SRCPAINT);
-					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-					Sleep(N);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-					}	
-					
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x<=position_x2-165)
-						{
-							position_x=position_x+5;
-						}
-						left++;
-						putimage(position_x,position_y,200,255,&bashendazhao2_,left*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashendazhao2,left*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(N);
-						FlushBatchDraw();
-						if(left==10)
-							left=0;
-					}
-
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x<=position_x2-165)
-						{
-							position_x=position_x+5;
-						}
-						left++;
-						putimage(position_x,position_y,200,255,&bashendazhao3_,left*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashendazhao3,left*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(N);
-						FlushBatchDraw();
-						if(left==10)
-							left=0;
-					}
-	
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x<=position_x2-165)
-						{
-							position_x=position_x+5;
-						}
-						left++;
-						putimage(position_x,position_y,155,255,&bashendazhao4_,left*200,0,SRCAND);
-						putimage(position_x,position_y,155,255,&bashendazhao4,left*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(N);
-						if(left==10)
-							left=0;
-					}
-
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x<=position_x2-165)
-						{
-							position_x=position_x+5;
-						}
-						left++;
-						putimage(position_x,position_y,155,255,&bashendazhao5_,left*200,0,SRCAND);
-						putimage(position_x,position_y,155,255,&bashendazhao5,left*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(N);
-						FlushBatchDraw();
-						if(left==10)
-							left=0;
-					}
-	
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x<=position_x2-165)
-						{
-							position_x=position_x+5;
-						}
-						left++;
-						putimage(position_x,position_y,155,255,&bashendazhao6_,left*200,0,SRCAND);
-						putimage(position_x,position_y,155,255,&bashendazhao6,left*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(N);
-						FlushBatchDraw();
-						if(left==10)
-							left=0;
-					}
-	
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x<=position_x2-165)
-						{
-							position_x=position_x+5;
-						}
-						left++;
-						putimage(position_x,position_y,155,255,&bashendazhao7_,left*200,0,SRCAND);
-						putimage(position_x,position_y,155,255,&bashendazhao7,left*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(N);
-						FlushBatchDraw();
-						if(left==10)
-							left=0;
-					}
-	
-					for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x<=position_x2-165)
-						{
-							position_x=position_x+5;
-						}
-						left++;
-						putimage(position_x,position_y,155,255,&bashendazhao8_,left*200,0,SRCAND);
-						putimage(position_x,position_y,155,255,&bashendazhao8,left*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(N);
-						FlushBatchDraw();
-						if(left==10)
-							left=0;
-					}
-
-					for(i=0;i<10;i++)
-					{
-
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						if(position_x<=position_x2-165)
-						{
-							position_x=position_x+5;
-						}
-						left++;
-						putimage(position_x,position_y,200,255,&bashendazhao9_,left*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashendazhao9,left*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(N);
-						FlushBatchDraw();
-						if(left==7)
-							left=0;
-					}
-						left=0;
-
-				}
-				if(GetAsyncKeyState(0x49)&0x8000)		//实现八神的二招 i
-				{
-						for(i=0;i<10;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						putimage(position_x,position_y,200,255,&bashenerzhao1_,i*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashenerzhao1,i*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-						Sleep(50);
-						FlushBatchDraw();
-					}
-						for(i=0;i<9;i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
-						putimage(0,0,&bk);
-						putimage(position_x,position_y,200,255,&bashenerzhao2_,i*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashenerzhao2,i*200,0,SRCPAINT);
-						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&ktiaoyue3_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&ktiaoyue3,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
 				}
-				if(GetAsyncKeyState(0x4A)&0x8000)		//实现八神的普攻 j
+				if(GetAsyncKeyState(VK_DOWN)&0x8000)			//k下蹲
 				{	
-						for(i=0;i<10;i++)
-						{
-							clearrectangle(position_x,position_y,position_x+150,position_y+255);
-							putimage(0,0,&bk);
-							if(position_x<=position_x2-165)
-							{
-								position_x=position_x+5;
-							}
-							putimage(position_x,position_y,150,255,&bashenpugong11_,i*150,0,SRCAND);
-							putimage(position_x,position_y,150,255,&bashenpugong11,i*150,0,SRCPAINT);
-							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-							Sleep(50);
-							FlushBatchDraw();
-						}
-						for(i=0;i<10;i++)
-						{
-							clearrectangle(position_x,position_y,position_x+150,position_y+255);
-							putimage(0,0,&bk);
-							if(position_x<=position_x2-165)
-							{
-								position_x=position_x+5;
-							}
-							putimage(position_x,position_y,150,255,&bashenpugong12_,i*150,0,SRCAND);
-							putimage(position_x,position_y,150,255,&bashenpugong12,i*150,0,SRCPAINT);
-							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-							Sleep(50);
-							FlushBatchDraw();
-						}
-						for(i=0;i<10;i++)
-						{
-							clearrectangle(position_x,position_y,position_x+150,position_y+255);
-							putimage(0,0,&bk);
-							if(position_x<=position_x2-165)
-							{
-								position_x=position_x+5;
-							}
-							putimage(position_x,position_y,150,255,&bashenpugong13_,i*150,0,SRCAND);
-							putimage(position_x,position_y,150,255,&bashenpugong13,i*150,0,SRCPAINT);
-							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
-							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
-							Sleep(50);
-							FlushBatchDraw();
-						}
-						for(i=0;i<4;i++)
-						{
-							clearrectangle(position_x,position_y,position_x+150,position_y+255);
-							putimage(0,0,&bk);
-							if(position_x<=position_x2-165)
-							{
-								position_x=position_x+5;
-							}
-							putimage(position_x,position_y,150,255,&bashenpugong14_,i*150,0,SRCAND);
-							putimage(position_x,position_y,150,255,&bashenpugong14,i*150,0,SRCPAINT);
-							Sleep(50);
-							FlushBatchDraw();
-						}
+					
+					for(i=0;i<2;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,200,255,&kxiadun1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kxiadun1,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<4;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2+100,200,255,&kxiadun2_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2+100,200,255,&kxiadun2,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<4;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,200,255,&kxiadun3_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kxiadun3,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
 				}
-			//导入右侧玩家控制的人物的动作
-			key=getch();
-			
-			if(GetAsyncKeyState(VK_LEFT)&0x8000)		//实现k的前进
-			{
+				if((GetAsyncKeyState(0x30)&0x8000)&&(kdazhao==1))			//k释放了大招
+				{
+					choice=1;
+					kdazhao=0;
+					time2++;
 					for(i=0;i<10;i++)
 					{
-						clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
 						putimage(0,0,&bk);
-						if(position_x2>=0)	
-						{
-							position_x2=position_x2-15;
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=0)
+						{	
+							position_x2=position_x2-3;
 						}
-						putimage(position_x2,position_y2,200,255,&kqianjin1_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kqianjin1,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kdazhao1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao1,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
-						for(i=0;i<5;i++)
+					for(i=0;i<10;i++)
 					{
-						clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
 						putimage(0,0,&bk);
-						if(position_x2>=0)	
-						{
-							position_x2=position_x2-15;
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
 						}
-						putimage(position_x2,position_y2,200,255,&kqianjin2_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kqianjin2,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kdazhao2_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao2,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
-			}
-			if(GetAsyncKeyState(VK_RIGHT)&0x8000)		//实现k的后退
-			{
-					for(i=5;i<10;i++)
+					for(i=0;i<10;i++)
 					{
-						clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
 						putimage(0,0,&bk);
-						if(position_x2>=position_x)	
-						{
-							position_x2=position_x2+15;
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
 						}
-						putimage(position_x2,position_y2,200,255,&kqianjin2_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kqianjin2,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kdazhao3_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao3,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
-					for(i=5;i<11;i++)
+					for(i=0;i<10;i++)
 					{
-						clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
 						putimage(0,0,&bk);
-						if(position_x2>=position_x)	
-						{
-							position_x2=position_x2+15;
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
 						}
-						putimage(position_x2,position_y2,200,255,&kqianjin3_,i*200,0,SRCAND);
-						putimage(position_x2,position_y2,200,255,&kqianjin3,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kdazhao4_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao4,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
-			}
-			if(GetAsyncKeyState(VK_UP)&0x8000)			//实现k的跳跃
-			{	
-				for(i=0;i<7;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_y2>=0)	
+					for(i=0;i<10;i++)
 					{
-						position_y2=position_y2-30;
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao5_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao5,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
 					}
-					putimage(position_x2,position_y2,200,255,&ktiaoyue2_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&ktiaoyue2,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=5;i<12;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_y2<=high*1.3-255)	
+					for(i=0;i<10;i++)
 					{
-						position_y2=position_y2+30;
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao6_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao6,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
 					}
-					putimage(position_x2,position_y2,200,255,&ktiaoyue3_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&ktiaoyue3,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-			}
-			if(GetAsyncKeyState(VK_DOWN)&0x8000)			//k下蹲
-			{	
-				
-				for(i=0;i<2;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					putimage(position_x2,position_y2,200,255,&kxiadun1_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kxiadun1,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<4;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+100,position_y2+150);
-					putimage(0,0,&bk);
-					putimage(position_x2,position_y2+100,100,255,&kxiadun2_,i*100,0,SRCAND);
-					putimage(position_x2,position_y2+100,100,255,&kxiadun2,i*100,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<4;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					putimage(position_x2,position_y2,200,255,&kxiadun3_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kxiadun3,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-			}
-			if(GetAsyncKeyState(0x30)&0x8000)			//k释放了大招
-			{
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao1_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao1,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao2_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao2,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao3_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao3,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao4_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao4,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao5_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao5,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao6_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao6,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao7_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao7,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao8_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao8,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao9_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao9,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao10_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao10,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao11_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao11,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao12_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao12,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao13_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao13,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao14_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao14,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2+12;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao15_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao15,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-12;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao16_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao16,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<12;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
-					{	
-						position_x2=position_x2-3;
-					}
-					putimage(position_x2,position_y2,200,255,&kdazhao17_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&kdazhao17,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-			}
-			if(GetAsyncKeyState(0x31)&0x8000)
-			{
-				for(i=0;i<12;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+250,position_y2+300);
-					putimage(0,0,&bk);
-					putimage(position_x2,position_y2,250,300,&kerzhao1_,i*250,0,SRCAND);
-					putimage(position_x2,position_y2,250,300,&kerzhao1,i*250,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<12;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+250,position_y2+300);
-					putimage(0,0,&bk);
-					putimage(position_x2,position_y2,250,300,&kerzhao2_,i*250,0,SRCAND);
-					putimage(position_x2,position_y2,250,300,&kerzhao2,i*250,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-			}
-			if(GetAsyncKeyState(0x33)&0x8000)
-			{
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
+					for(i=0;i<10;i++)
 					{
-						position_x2=position_x2-5;
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao7_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao7,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
 					}
-					putimage(position_x2,position_y2,200,255,&ksanzhao1_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&ksanzhao1,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
+					for(i=0;i<10;i++)
 					{
-						position_x2=position_x2-5;
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao8_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao8,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
 					}
-					putimage(position_x2,position_y2,200,255,&ksanzhao2_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&ksanzhao2,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
+					for(i=0;i<10;i++)
 					{
-						position_x2=position_x2-5;
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao9_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao9,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
 					}
-					putimage(position_x2,position_y2,200,255,&ksanzhao3_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&ksanzhao3,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
+					for(i=0;i<10;i++)
 					{
-						position_x2=position_x2-5;
+
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao10_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao10,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
 					}
-					putimage(position_x2,position_y2,200,255,&ksanzhao4_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&ksanzhao4,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<10;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
-					putimage(0,0,&bk);
-					if(position_x2>=0)
+					for(i=0;i<10;i++)
 					{
-						position_x2=position_x2-5;
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao11_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao11,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
 					}
-					putimage(position_x2,position_y2,200,255,&ksanzhao5_,i*200,0,SRCAND);
-					putimage(position_x2,position_y2,200,255,&ksanzhao5,i*200,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao12_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao12,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao13_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao13,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao14_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao14,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2+12;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao15_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao15,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-12;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao16_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao16,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<12;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{	
+							position_x2=position_x2-3;
+						}
+						putimage(position_x2,position_y2,200,255,&kdazhao17_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kdazhao17,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)		//当P2释放大招的时候P1会有一个击倒的效果
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x,position_y+75,150,170,&bashenjidao1_,i*150,0,SRCAND);
+						putimage(position_x,position_y+75,150,170,&bashenjidao1,i*150,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x,position_y+75,200,100,&bashenjidao2_,i*200,0,SRCAND);
+						putimage(position_x,position_y+75,200,100,&bashenjidao2,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x,position_y+75,200,100,&bashenjidao3_,i*200,0,SRCAND);
+						putimage(position_x,position_y+75,200,100,&bashenjidao3,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					
+					if((position_x2<=position_x+200)&&(position_y==position_y2))
+					{
+						blood1=blood1-5;
+					}
+					position_x2=width*1.5-200;
+					position_y2=high*1.3-255;
+				}
+				if((GetAsyncKeyState(0x31)&0x8000)&&(energy2>=3))			//k的二招
+				{
+					choice=1;
+					energy2=energy2-3;
+					time2++;
+					for(i=0;i<12;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,250,300,&kerzhao1_,i*250,0,SRCAND);
+						putimage(position_x2,position_y2,250,300,&kerzhao1,i*250,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<12;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,250,300,&kerzhao2_,i*250,0,SRCAND);
+						putimage(position_x2,position_y2,250,300,&kerzhao2,i*250,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					if((position_x2<=position_x+200)&&(position_y==position_y2))
+					{
+						blood1=blood1-3;
+					}
+					position_x2=width*1.5-200;
+					position_y2=high*1.3-255;
+				}
+				if((GetAsyncKeyState(0x33)&0x8000)&&(energy2>=5))			//k的三招
+				{
+					choice=1;
+					energy2=energy2-5;
+					time2++;
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{
+							position_x2=position_x2-5;
+						}
+						putimage(position_x2,position_y2,200,255,&ksanzhao1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&ksanzhao1,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{
+							position_x2=position_x2-5;
+						}
+						putimage(position_x2,position_y2,200,255,&ksanzhao2_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&ksanzhao2,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{
+							position_x2=position_x2-5;
+						}
+						putimage(position_x2,position_y2,200,255,&ksanzhao3_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&ksanzhao3,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{
+							position_x2=position_x2-5;
+						}
+						putimage(position_x2,position_y2,200,255,&ksanzhao4_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&ksanzhao4,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<10;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						if(position_x2>=position_x+200)
+						{
+							position_x2=position_x2-5;
+						}
+						putimage(position_x2,position_y2,200,255,&ksanzhao5_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&ksanzhao5,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					if((position_x2<=position_x+200)&&(position_y==position_y2))
+					{
+						blood1=blood1-4;
+					}
+					position_x2=width*1.5-200;
+					position_y2=high*1.3-255;
+				}
+				if(GetAsyncKeyState(0x35)&0x8000)			//k的普通攻击
+				{
+					choice=1;
+					energy2=energy2+3;
+					time2++;
+					for(i=0;i<3;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,250,300,&kpugong23_,i*250,0,SRCAND);
+						putimage(position_x2,position_y2,250,300,&kpugong23,i*250,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<15;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,300,250,&kpugong22_,i*300,0,SRCAND);
+						putimage(position_x2,position_y2,300,250,&kpugong22,i*300,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<2;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,250,300,&kpugong21_,i*250,0,SRCAND);
+						putimage(position_x2,position_y2,250,300,&kpugong21,i*250,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					if((position_x2<=position_x+200)&&(position_y==position_y2))
+					{
+						blood1--;
+					}
+					position_x2=width*1.5-200;
+					position_y2=high*1.3-255;
+				}
+				if((GetAsyncKeyState(0x38)&0x8000)&&(energy2>=10))			//k开始爆气
+				{
+					energy2=1;
+					kdazhao=1;
+					choice=1;
+					time2++;
+					for(i=0;i<4;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,200,300,&kbaoqi21_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,300,&kbaoqi21,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<4;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,200,300,&kbaoqi21_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,300,&kbaoqi21,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=0;i<4;i++)
+					{
+						putimage(0,0,&bk);
+						bloodshowk(blood2);
+						bloodshowbashen(blood1);
+						energyshowbashen(energy1);
+						energyshowk(energy2);
+						round(choice);
+						bigskill(bashendazhao,kdazhao);
+						putimage(position_x2,position_y2,200,300,&kbaoqi21_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,300,&kbaoqi21,i*200,0,SRCPAINT);
+						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+				position_x2=width*1.5-200;
+				position_y2=high*1.3-255;
 				}
 			}
-			if(GetAsyncKeyState(0x35)&0x8000)
-			{
-				for(i=0;i<3;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+250,position_y2+300);
-					putimage(0,0,&bk);
-					putimage(position_x2,position_y2,250,300,&kpugong23_,i*250,0,SRCAND);
-					putimage(position_x2,position_y2,250,300,&kpugong23,i*250,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<15;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+300,position_y2+250);
-					putimage(0,0,&bk);
-					putimage(position_x2,position_y2,300,250,&kpugong22_,i*300,0,SRCAND);
-					putimage(position_x2,position_y2,300,250,&kpugong22,i*300,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-				for(i=0;i<2;i++)
-				{
-					clearrectangle(position_x2,position_y2,position_x2+250,position_y2+300);
-					putimage(0,0,&bk);
-					putimage(position_x2,position_y2,250,300,&kpugong21_,i*250,0,SRCAND);
-					putimage(position_x2,position_y2,250,300,&kpugong21,i*250,0,SRCPAINT);
-					Sleep(50);
-					FlushBatchDraw();
-				}
-			}
-			}
-		
 		}
-	if(stage==4)
-	{		
-		EndBatchDraw();
-		stage=5;
-	}
-	return stage;
+			Sleep(100);
+			if(sign==0)//当其中一方死亡后进行判定，对应显示胜利方
+			{
+				if(blood1<=0)
+				{	
+					putimage(0,0,&kshengli);
+				}	
+			}
+			if(sign==0)
+			{
+				if(blood2<=0)
+				{
+					putimage(0,0,&bashenshengli);
+				}
+			}
+	}//sign
+		input=getch();
+		if(input=='j')//按下J键继续游戏
+		{
+			flag=0;
+		}
+		else if(input=='b')//按下B键退出游戏
+		{
+			exit(0);
+		}
+
+	}//flag
 }
 
-
-int ending(int stage)
+/****************************************有关图片的函数*************************************/ 
+void pictureloading()//图片加载函数
 {
-
-	gameover();
-	stage=6;
-	return stage;
-}
-
-
-int main()
-{
-	int s1,s2,s3,s4;	//用于储存游戏下一阶段的变量
-	int stage=1;		//定义游戏阶段，其中stage=1的时候对应的是播放开始动画，stage=2的时候是拳皇97的进入界面，stage=3对应的是游戏的选人界
-						//stage=4对应的是进入战斗界面
-	
-	startup();
-	
-	start_video(stage);
-	s1=start_video(stage);
-	
-	start_97(s1);
-	s2=start_97(s1);
-
-	character_select(s2);
-	s3=character_select(s2);
-	
-	fighting(s3);
-	s4=fighting(s3);
-	
-	ending(s4);
-	return 0;
-}
-
-
-
-
-//下面是每个阶段可能用到的		【功能函数】or【代码过长的函数】
-
-
-
-void gameover()			//结束绘图函数
-{
-	EndBatchDraw();
-	closegraph();
-}
-
-
-
-void startup()			//初始化函数
-{
-	initgraph(width,high);
-	
 	//开始动画
 	loadimage(&start_anime1,".\\1.png");
 	loadimage(&start_anime2,".\\2.png");
@@ -1712,6 +3008,22 @@ void startup()			//初始化函数
 	loadimage(&bashentiaoyuegai1_,".\\bashen36.bmp");
 	loadimage(&bashentiaoyuegai2,".\\bashen 37.bmp");
 	loadimage(&bashentiaoyuegai2_,".\\bashen37.bmp");
+	loadimage(&bashenbaoqi21,".\\bashen 38.bmp");
+	loadimage(&bashenbaoqi21_,".\\bashen38.bmp");
+	loadimage(&bashenbaoqi22,".\\bashen 39.bmp");
+	loadimage(&bashenbaoqi22_,".\\bashen39.bmp");
+	loadimage(&bashenbaoqi23,".\\bashen 40.bmp");
+	loadimage(&bashenbaoqi23_,".\\bashen40.bmp");
+	loadimage(&bashenbaoqi24,".\\bashen 41.bmp");
+	loadimage(&bashenbaoqi24_,".\\bashen41.bmp");
+	loadimage(&bashenbaoqi25,".\\bashen 42.bmp");
+	loadimage(&bashenbaoqi25_,".\\bashen42.bmp");
+	loadimage(&bashenbaoqi26,".\\bashen 43.bmp");
+	loadimage(&bashenbaoqi26_,".\\bashen43.bmp");
+	loadimage(&bashenbaoqi27,".\\bashen 44.bmp");
+	loadimage(&bashenbaoqi27_,".\\bashen44.bmp");
+	loadimage(&bashenbaoqi28,".\\bashen 45.bmp");
+	loadimage(&bashenbaoqi28_,".\\bashen45.bmp");
 	//右侧玩家控制的人物的动作和战斗效果导入
 	loadimage(&kbenpao1,".\\k 1.bmp");
 	loadimage(&kbenpao1_,".\\k1.bmp");
@@ -1827,10 +3139,78 @@ void startup()			//初始化函数
 	loadimage(&kpugong23_,".\\k58.bmp");
 	loadimage(&kbaoqi1,".\\k 59.bmp");
 	loadimage(&kbaoqi1_,".\\k59.bmp");
-	BeginBatchDraw();
-}
+	loadimage(&kbaoqi21,".\\k 61.bmp");
+	loadimage(&kbaoqi21_,".\\k61.bmp");
 
-void video()			//开始动画播放函数
+	//初始化界面（包括血条，背景，死亡界面，死亡动画效果,胜利）
+	loadimage(&xuetiao1,".\\xuetiao1.png");
+	loadimage(&xuetiao2,".\\xuetiao2.png");
+	loadimage(&xuetiao3,".\\xuetiao3.png");
+	loadimage(&xuetiao4,".\\xuetiao4.png");
+	loadimage(&xuetiao5,".\\xuetiao5.png");
+	loadimage(&xuetiao6,".\\xuetiao6.png");
+	loadimage(&xuetiao7,".\\xuetiao7.png");
+	loadimage(&xuetiao8,".\\xuetiao8.png");
+	loadimage(&xuetiao9,".\\xuetiao9.png");
+	loadimage(&xuetiao10,".\\xuetiao10.png");
+	loadimage(&xuetiao11,".\\xuetiao11.png");
+	loadimage(&xuetiao12,".\\xuetiao12.png");
+	loadimage(&xuetiao13,".\\xuetiao13.png");
+	loadimage(&xuetiao14,".\\xuetiao14.png");
+	loadimage(&xuetiao15,".\\xuetiao15.png");
+	loadimage(&xuetiao16,".\\xuetiao16.png");
+	loadimage(&xuetiao17,".\\xuetiao17.png");
+	loadimage(&xuetiao18,".\\xuetiao18.png");
+	loadimage(&xuetiao19,".\\xuetiao19.png");
+	loadimage(&xuetiao20,".\\xuetiao20.png");
+	loadimage(&energy_1,".\\能量1.png");
+	loadimage(&energy_2,".\\能量2.png");
+	loadimage(&energy3,".\\能量3.png");
+	loadimage(&energy4,".\\能量4.png");
+	loadimage(&energy5,".\\能量5.png");
+	loadimage(&energy6,".\\能量6.png");
+	loadimage(&energy7,".\\能量7.png");
+	loadimage(&energy8,".\\能量8.png");
+	loadimage(&energy9,".\\能量9.png");
+	loadimage(&energy10,".\\能量10.png");
+	loadimage(&energy11,".\\能量11.png");
+	loadimage(&energy12,".\\能量12.png");
+	loadimage(&energy13,".\\能量13.png");
+	loadimage(&energy14,".\\能量14.png");
+	loadimage(&energy15,".\\能量15.png");
+	loadimage(&energy16,".\\能量16.png");
+	loadimage(&energy17,".\\能量17.png");
+	loadimage(&energy18,".\\能量18.png");
+	loadimage(&energy19,".\\能量19.png");
+	loadimage(&energy20,".\\能量20.png");
+	loadimage(&siwangshenpan1,".\\死亡审判1.bmp");
+	loadimage(&siwangshenpan2,".\\死亡审判2.bmp");
+	loadimage(&zuojiantou,".\\左箭头.bmp");
+	loadimage(&zuojiantou_,".\\左箭头遮罩图.bmp");
+	loadimage(&youjiantou,".\\右箭头.bmp");
+	loadimage(&youjiantou_,".\\右箭头遮罩图.bmp");
+	loadimage(&bashensiwang,".\\bashensiwang.png");
+	loadimage(&ksiwang,".\\ksiwang.png");
+	loadimage(&bashenshengli,".\\bashenshengli.png");
+	loadimage(&kshengli,".\\kshengli.png");
+	loadimage(&dazhao,".\\大招.bmp");
+	loadimage(&dazhao_,".\\大招遮罩图.bmp");
+	//导入开头解释说明的背景图片
+	loadimage(&shuoming1,".\\背景1.png");
+	loadimage(&shuoming2,".\\背景2.png");
+	loadimage(&shuoming3,".\\背景3.png");
+	loadimage(&shuoming4,".\\背景4.png");
+	//导入骰子图片
+	loadimage(&shaizi1,".\\色子1.png");
+	loadimage(&shaizi2,".\\色子2.png");
+	loadimage(&shaizi3,".\\色子3.png");
+	loadimage(&shaizi4,".\\色子4.png");
+	loadimage(&shaizi5,".\\色子5.png");
+	loadimage(&shaizi6,".\\色子6.png");
+} 
+
+
+void startvideo()			//开始动画播放函数
 {
 
 	mciSendString("open .\\bkmusic_start.mp3 alias bkmusic", NULL, 0, NULL);//播放背景音乐
