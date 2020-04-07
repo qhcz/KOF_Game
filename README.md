@@ -129,7 +129,7 @@
 	IMAGE select1;
 	IMAGE cursor1;
 	IMAGE cursor2;
-	//人物及人物的动作
+	//导入左侧玩家的动作
 	IMAGE bashenbenpao1;
 	IMAGE bashenzhanli1;
 	IMAGE bashenchuchang1;
@@ -183,7 +183,7 @@
 	IMAGE bashenfangshou;
 	IMAGE bashentiaoyuegai1;
 	IMAGE bashentiaoyuegai2;
-	//导入遮罩图
+	//导入左侧玩家的遮罩图
 	IMAGE bashenbenpao1_;
 	IMAGE bashenzhanli1_;
 	IMAGE bashenchuchang1_;
@@ -221,6 +221,123 @@
 	IMAGE bashenfangshou1_;
 	IMAGE bashentiaoyuegai1_;
 	IMAGE bashentiaoyuegai2_;
+	//导入右侧玩家的动作
+	IMAGE kbenpao1;
+	IMAGE kbenpao2;
+	IMAGE kchuchang1;
+	IMAGE kchuchang2;
+	IMAGE kchuchang3;
+	IMAGE kchuchang4;
+	IMAGE kzhanli1;
+	IMAGE kxiadun1;
+	IMAGE kxiadun2;
+	IMAGE kxiadun3;
+	IMAGE kdazhao1;
+	IMAGE kdazhao2;
+	IMAGE kdazhao3;
+	IMAGE kdazhao4;
+	IMAGE kdazhao5;
+	IMAGE kdazhao6;
+	IMAGE kdazhao7;
+	IMAGE kdazhao8;
+	IMAGE kdazhao9;
+	IMAGE kdazhao10;
+	IMAGE kdazhao11;
+	IMAGE kdazhao12;
+	IMAGE kdazhao13;
+	IMAGE kdazhao14;
+	IMAGE kdazhao15;
+	IMAGE kdazhao16;
+	IMAGE kdazhao17;
+	IMAGE kerzhao1;
+	IMAGE kerzhao2;
+	IMAGE kqianjin1;
+	IMAGE kqianjin2;
+	IMAGE kqianjin3;
+	IMAGE khoutui1;
+	IMAGE khoutui2;
+	IMAGE khoutui3;
+	IMAGE khuibi11;
+	IMAGE khuibi21;
+	IMAGE kpugong21;
+	IMAGE kpugong22;
+	IMAGE kpugong23;
+	IMAGE ksanzhao1;
+	IMAGE ksanzhao2;
+	IMAGE ksanzhao3;
+	IMAGE ksanzhao4;
+	IMAGE ksanzhao5;
+	IMAGE ktiaoyue1;
+	IMAGE ktiaoyue2;
+	IMAGE ktiaoyue3;
+	IMAGE kpugong11;
+	IMAGE kpugong12;
+	IMAGE kbaoqi1;
+	IMAGE kbaoqi2;
+	IMAGE kbaoqi3;
+	IMAGE kjidao1;
+	IMAGE kjidao2;
+	IMAGE kjidao3;
+	IMAGE kfangshou1;
+	//导入右侧玩家遮罩图
+	IMAGE kbenpao1_;
+	IMAGE kbenpao2_;
+	IMAGE kchuchang1_;
+	IMAGE kchuchang2_;
+	IMAGE kchuchang3_;
+	IMAGE kchuchang4_;
+	IMAGE kzhanli1_;
+	IMAGE kxiadun1_;
+	IMAGE kxiadun2_;
+	IMAGE kxiadun3_;
+	IMAGE kdazhao1_;
+	IMAGE kdazhao2_;
+	IMAGE kdazhao3_;
+	IMAGE kdazhao4_;
+	IMAGE kdazhao5_;
+	IMAGE kdazhao6_;
+	IMAGE kdazhao7_;
+	IMAGE kdazhao8_;
+	IMAGE kdazhao9_;
+	IMAGE kdazhao10_;
+	IMAGE kdazhao11_;
+	IMAGE kdazhao12_;
+	IMAGE kdazhao13_;
+	IMAGE kdazhao14_;
+	IMAGE kdazhao15_;
+	IMAGE kdazhao16_;
+	IMAGE kdazhao17_;
+	IMAGE kerzhao1_;
+	IMAGE kerzhao2_;
+	IMAGE kqianjin1_;
+	IMAGE kqianjin2_;
+	IMAGE kqianjin3_;
+	IMAGE khoutui1_;
+	IMAGE khoutui2_;
+	IMAGE khoutui3_;
+	IMAGE khuibi11_;
+	IMAGE khuibi21_;
+	IMAGE kpugong21_;
+	IMAGE kpugong22_;
+	IMAGE kpugong23_;
+	IMAGE ksanzhao1_;
+	IMAGE ksanzhao2_;
+	IMAGE ksanzhao3_;
+	IMAGE ksanzhao4_;
+	IMAGE ksanzhao5_;
+	IMAGE ktiaoyue1_;
+	IMAGE ktiaoyue2_;
+	IMAGE ktiaoyue3_;
+	IMAGE kpugong11_;
+	IMAGE kpugong12_;
+	IMAGE kbaoqi1_;
+	IMAGE kbaoqi2_;
+	IMAGE kbaoqi3_;
+	IMAGE kjidao1_;
+	IMAGE kjidao2_;
+	IMAGE kjidao3_;
+	IMAGE kfangshou1_;
+
 
 
 void startup();			//游戏初始化（加载图片等等）
@@ -275,10 +392,6 @@ int character_select(int stage)
 			{
 				input=getch();
 				putimage(0,0,&select1);
-				putimage(select_x,select_y,&cursor1,SRCAND);
-				putimage(select_x,select_y,&cursor2,SRCPAINT);
-				//Sleep(N);
-				FlushBatchDraw();
 				if(input=='j')			//按下j键进入下一个阶段
 					break;	
 				else if(input=='d' && select_x<570)
@@ -360,16 +473,15 @@ int character_select(int stage)
 					else if(input=='w' && select_y>40)
 						select_y=select_y-73;
 				}
-				/*else if(input=='s' && select_y<150)
-					select_y=select_y+73;
-				else if(input=='w' && select_y>40)
-					select_y=select_y-73;*/
 			}
+			putimage(select_x,select_y,&cursor1,SRCAND);
+			putimage(select_x,select_y,&cursor2,SRCPAINT);
+			FlushBatchDraw();
 		}
 		EndBatchDraw();
 		stage=4;
 	}
-	stage=4;
+
 	return stage;
 }
 
@@ -377,64 +489,110 @@ int character_select(int stage)
 int fighting(int stage)
 {	
 
-	int position_x=0,position_y=high;
+	int position_x=0,position_y=high*1.3-255;
+	int position_x2=width*1.5-200,position_y2=high*1.3-255;
 	int left=0,right=0;
 	int x=0,y=0;
 	char input;
+	int key,key2;
 	closegraph();
-	initgraph(width*2.0,high*1.5);
+	initgraph(width*1.5,high*1.3);
 	putimage(0,0,&bk);
 	int i,k;
+	
 	for(i=0;(i<12 && kbhit()!=1);i++)
 	{	
-		clearrectangle(0,477,200,255);
+		clearrectangle(position_x,0,position_x+200,position_y+255);
 		putimage(0,0,&bk);
-		putimage(0,477,200,255,&bashenchuchang1_,i*200,0,SRCAND);
-		putimage(0,477,200,255,&bashenchuchang1,i*200,0,SRCPAINT);
+		putimage(0,position_y,200,255,&bashenchuchang1_,i*200,0,SRCAND);
+		putimage(0,position_y,200,255,&bashenchuchang1,i*200,0,SRCPAINT);
 		Sleep(N);
 		FlushBatchDraw();
 	}
-
+	for(i=9;(i>=0 && kbhit()!=1);i--)
+	{	
+		clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+		putimage(0,0,&bk);
+		putimage(position_x2,position_y2,200,255,&kchuchang4_,i*200,0,SRCAND);
+		putimage(position_x2,position_y2,200,255,&kchuchang4,i*200,0,SRCPAINT);
+		Sleep(N);
+		FlushBatchDraw();
+	}
+	for(i=9;(i>=0 && kbhit()!=1);i--)
+	{	
+		clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+		putimage(0,0,&bk);
+		putimage(position_x2,position_y2,200,255,&kchuchang3_,i*200,0,SRCAND);
+		putimage(position_x2,position_y2,200,255,&kchuchang3,i*200,0,SRCPAINT);
+		Sleep(N);
+		FlushBatchDraw();
+	}
+	for(i=9;(i>=0 && kbhit()!=1);i--)
+	{	
+		clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+		putimage(0,0,&bk);
+		putimage(position_x2,position_y2,200,255,&kchuchang2_,i*200,0,SRCAND);
+		putimage(position_x2,position_y2,200,255,&kchuchang2,i*200,0,SRCPAINT);
+		Sleep(N);
+		FlushBatchDraw();
+	}
+	for(i=9;(i>=0 && kbhit()!=1);i--)
+	{	
+		clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+		putimage(0,0,&bk);
+		putimage(position_x2,position_y2,200,255,&kchuchang1_,i*200,0,SRCAND);
+		putimage(position_x2,position_y2,200,255,&kchuchang1,i*200,0,SRCPAINT);
+		Sleep(N);
+		FlushBatchDraw();
+	}
 	while(1)
 	{
-			input=getch();
-			
-
-		if(kbhit()!=0)
-		{
-			for(i=0;(i<9 && kbhit()!=1);i++)
+	//添加左侧玩家控制人物的各项动作
+		if(kbhit()==0)
+		{	
+		
+				for(i=0;i<9;i++)
 			{
 				clearrectangle(0,0,691,477);
 				putimage(0,0,&bk);
 				putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
 				putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
-				Sleep(N);
+				putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+				putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 				FlushBatchDraw();
+				Sleep(80);
 			}
+				
 		}
-	
-		if(kbhit()==0)
+
+
+		if(kbhit()!=0)
 			{
+		
+			input=getch();
 				
 			
 			//Sleep(N);	
-				if(input=='a')		//实现八神的后退(左移)动作
+				if((GetAsyncKeyState(0x41)&0x8000))		//实现八神的后退(左移)动作 a
 				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x>=0)
-					{
-						position_x=position_x-10;
-					}
-					left++;
-					putimage(position_x,position_y,200,255,&bashenhoutui1_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashenhoutui1,left*200,0,SRCPAINT);
-					FlushBatchDraw();
-					if(left==9)
-						left=0;	
 				
+					for(i=0;i<6;i++)
+					{
+						clearrectangle(position_x,position_y,position_x+150,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x>=0)	
+						{
+							position_x=position_x-20;
+						}
+						putimage(position_x,position_y,150,255,&bashenhoutui1_,i*150,0,SRCAND);
+						putimage(position_x,position_y,150,255,&bashenhoutui1,i*150,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
 				}
-				if(input=='q')
+				if(GetAsyncKeyState(0x51)&0x8000)			//实现八神的快速后退 q
 				{
 					clearrectangle(position_x,position_y,position_x+200,position_y+255);
 					putimage(0,0,&bk);
@@ -445,6 +603,8 @@ int fighting(int stage)
 					left++;
 					putimage(position_x,position_y,200,255,&bashenhoutui1_,left*200,0,SRCAND);
 					putimage(position_x,position_y,200,255,&bashenhoutui1,left*200,0,SRCPAINT);
+					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 					FlushBatchDraw();
 					if(left==9)
 						left=0;	
@@ -452,49 +612,56 @@ int fighting(int stage)
 				}
 				
 				
-				if(input=='d')
+				if(GetAsyncKeyState(0x44)&0x8000)		//实现八神的前进 d
 				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
+					
+					for(i=0;i<10;i++)
 					{
-						position_x=position_x+10;
-					}
-					left++;
-					putimage(position_x,position_y,200,255,&bashenqianjin1_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashenqianjin1,left*200,0,SRCPAINT);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;		
-			
-				}
-			
-				if(input=='s')
-				{
-					for(i=0;(i<6&& kbhit()!=1);i++)
-					{
-						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						clearrectangle(position_x,position_y,position_x+150,position_y+255);
 						putimage(0,0,&bk);
-						putimage(position_x,position_y,200,255,&bashenxiadun1_,i*200,0,SRCAND);
-						putimage(position_x,position_y,200,255,&bashenxiadun1,i*200,0,SRCPAINT);
+						if(position_x<=position_x2-165)
+						{
+						position_x=position_x+20;
+						}	
+						putimage(position_x,position_y,150,255,&bashenqianjin1_,i*150,0,SRCAND);
+						putimage(position_x,position_y,150,255,&bashenqianjin1,i*150,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
-					}
-					for(i=0;(i<9&& kbhit()!=1);i++)
+					}				
+				}
+			
+				if(GetAsyncKeyState(0x53)&0x8000)		//实现八神的下蹲 s
+				{
+					for(i=0;i<6;i++)
+					{
+						clearrectangle(position_x,position_y,position_x+167,position_y+180);
+						putimage(0,0,&bk);
+						putimage(position_x,position_y+70,167,180,&bashenxiadun1_,i*167,0,SRCAND);
+						putimage(position_x,position_y+70,167,180,&bashenxiadun1,i*167,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					} 
+					for(i=0;i<9;i++)
 					{
 						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
 						putimage(position_x,position_y,200,255,&bashenzhanli1_,i*200,0,SRCAND);
 						putimage(position_x,position_y,200,255,&bashenzhanli1,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
 
 				}
 				
-				if(input=='k')
+				if(GetAsyncKeyState(0x4B)&0x8000)		//实现八神的跳跃 k
 				{
-					for(i=0;(i<8&& kbhit()!=1);i++)
+					for(i=0;i<8;i++)
 					{
 						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
@@ -504,10 +671,12 @@ int fighting(int stage)
 						}
 						putimage(position_x,position_y,200,255,&bashentiaoyuegai1_,i*200,0,SRCAND);
 						putimage(position_x,position_y,200,255,&bashentiaoyuegai1,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
-					for(i=0;(i<5&& kbhit()!=1);i++)
+					for(i=0;i<5;i++)
 					{
 						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
@@ -517,35 +686,41 @@ int fighting(int stage)
 						}
 						putimage(position_x,position_y,200,255,&bashentiaoyuegai2_,i*200,0,SRCAND);
 						putimage(position_x,position_y,200,255,&bashentiaoyuegai2,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
 
 				
 				}
-				if(input=='o')
+				if(GetAsyncKeyState(0x4F)&0x8000)		//实现八神的爆气 o
 				{
-					for(i=0;(i<10&& kbhit()!=1);i++)
+					for(i=0;i<10;i++)
 					{
 						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
 						putimage(position_x,position_y,200,255,&bashenbaoqi1_,i*200,0,SRCAND);
 						putimage(position_x,position_y,200,255,&bashenbaoqi1,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
-					for(i=0;(i<10&& kbhit()!=1);i++)
+					for(i=0;i<10;i++)
 					{
 						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
 						putimage(position_x,position_y,200,255,&bashenbaoqi2_,i*200,0,SRCAND);
 						putimage(position_x,position_y,200,255,&bashenbaoqi2,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
 				
 				}
-				if(input=='l')
+				if(GetAsyncKeyState(0x4C)&0x8000)		//实现八神的快速奔跑 l
 				{
 					clearrectangle(position_x,position_y,position_x+200,position_y+255);
 					putimage(0,0,&bk);
@@ -553,227 +728,737 @@ int fighting(int stage)
 					position_x=position_x+20;
 					putimage(position_x,position_y,200,255,&bashenbenpao1_,left*200,0,SRCAND);
 					putimage(position_x,position_y,200,255,&bashenbenpao1,left*200,0,SRCPAINT);
+					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 					FlushBatchDraw();
 					if(left==8)
 						left=0;		
 				}
-				if(input=='u')
+				if(GetAsyncKeyState(0x55)&0x8000)		//实现八神的大招 u
 				{
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
+					for(i=0;i<10;i++)
+					{
 					clearrectangle(position_x,position_y,position_x+200,position_y+255);
 					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
+					if(position_x<=position_x2-165)
 					{
 						position_x=position_x+5;
 					}
 					left++;
 					putimage(position_x,position_y,200,255,&bashendazhao1_,left*200,0,SRCAND);
 					putimage(position_x,position_y,200,255,&bashendazhao1,left*200,0,SRCPAINT);
+					putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 					Sleep(N);
 					FlushBatchDraw();
 					if(left==10)
 						left=0;
-				}	
+					}	
 					
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
+					for(i=0;i<10;i++)
 					{
-						position_x=position_x+5;
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x<=position_x2-165)
+						{
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,200,255,&bashendazhao2_,left*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashendazhao2,left*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(N);
+						FlushBatchDraw();
+						if(left==10)
+							left=0;
 					}
-					left++;
-					putimage(position_x,position_y,200,255,&bashendazhao2_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashendazhao2,left*200,0,SRCPAINT);
-					Sleep(N);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-				}
 
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
+					for(i=0;i<10;i++)
 					{
-						position_x=position_x+5;
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x<=position_x2-165)
+						{
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,200,255,&bashendazhao3_,left*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashendazhao3,left*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(N);
+						FlushBatchDraw();
+						if(left==10)
+							left=0;
 					}
-					left++;
-					putimage(position_x,position_y,200,255,&bashendazhao3_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashendazhao3,left*200,0,SRCPAINT);
-					Sleep(N);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-				}
-
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
-					{
-						position_x=position_x+5;
-					}
-					left++;
-					putimage(position_x,position_y,155,255,&bashendazhao4_,left*200,0,SRCAND);
-					putimage(position_x,position_y,155,255,&bashendazhao4,left*200,0,SRCPAINT);
-					Sleep(N);
-					if(left==10)
-						left=0;
-				}
-
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
-					{
-						position_x=position_x+5;
-					}
-					left++;
-					putimage(position_x,position_y,155,255,&bashendazhao5_,left*200,0,SRCAND);
-					putimage(position_x,position_y,155,255,&bashendazhao5,left*200,0,SRCPAINT);
-					Sleep(N);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-				}
 	
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
+					for(i=0;i<10;i++)
 					{
-						position_x=position_x+5;
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x<=position_x2-165)
+						{
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,155,255,&bashendazhao4_,left*200,0,SRCAND);
+						putimage(position_x,position_y,155,255,&bashendazhao4,left*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(N);
+						if(left==10)
+							left=0;
 					}
-					left++;
-					putimage(position_x,position_y,155,255,&bashendazhao6_,left*200,0,SRCAND);
-					putimage(position_x,position_y,155,255,&bashendazhao6,left*200,0,SRCPAINT);
-					Sleep(N);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-				}
 
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
+					for(i=0;i<10;i++)
 					{
-						position_x=position_x+5;
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x<=position_x2-165)
+						{
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,155,255,&bashendazhao5_,left*200,0,SRCAND);
+						putimage(position_x,position_y,155,255,&bashendazhao5,left*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(N);
+						FlushBatchDraw();
+						if(left==10)
+							left=0;
 					}
-					left++;
-					putimage(position_x,position_y,155,255,&bashendazhao7_,left*200,0,SRCAND);
-					putimage(position_x,position_y,155,255,&bashendazhao7,left*200,0,SRCPAINT);
-					Sleep(N);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-				}
-
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
+	
+					for(i=0;i<10;i++)
 					{
-						position_x=position_x+5;
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x<=position_x2-165)
+						{
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,155,255,&bashendazhao6_,left*200,0,SRCAND);
+						putimage(position_x,position_y,155,255,&bashendazhao6,left*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(N);
+						FlushBatchDraw();
+						if(left==10)
+							left=0;
 					}
-					left++;
-					putimage(position_x,position_y,155,255,&bashendazhao8_,left*200,0,SRCAND);
-					putimage(position_x,position_y,155,255,&bashendazhao8,left*200,0,SRCPAINT);
-					Sleep(N);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-				}
-
-				for(i=0;(i<10&& kbhit()!=1);i++)
-				{
-
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					if(position_x<=width*2-200)
+	
+					for(i=0;i<10;i++)
 					{
-						position_x=position_x+5;
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x<=position_x2-165)
+						{
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,155,255,&bashendazhao7_,left*200,0,SRCAND);
+						putimage(position_x,position_y,155,255,&bashendazhao7,left*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(N);
+						FlushBatchDraw();
+						if(left==10)
+							left=0;
 					}
-					left++;
-					putimage(position_x,position_y,200,255,&bashendazhao9_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashendazhao9,left*200,0,SRCPAINT);
-					Sleep(N);
-					FlushBatchDraw();
-					if(left==7)
+	
+					for(i=0;i<10;i++)
+					{
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x<=position_x2-165)
+						{
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,155,255,&bashendazhao8_,left*200,0,SRCAND);
+						putimage(position_x,position_y,155,255,&bashendazhao8,left*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(N);
+						FlushBatchDraw();
+						if(left==10)
+							left=0;
+					}
+
+					for(i=0;i<10;i++)
+					{
+
+						clearrectangle(position_x,position_y,position_x+200,position_y+255);
+						putimage(0,0,&bk);
+						if(position_x<=position_x2-165)
+						{
+							position_x=position_x+5;
+						}
+						left++;
+						putimage(position_x,position_y,200,255,&bashendazhao9_,left*200,0,SRCAND);
+						putimage(position_x,position_y,200,255,&bashendazhao9,left*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+						Sleep(N);
+						FlushBatchDraw();
+						if(left==7)
+							left=0;
+					}
 						left=0;
-				}
-				left=0;
 
 				}
-				if(input=='i')
+				if(GetAsyncKeyState(0x49)&0x8000)		//实现八神的二招 i
 				{
-						for(i=0;(i<10&& kbhit()!=1);i++)
+						for(i=0;i<10;i++)
 					{
 						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
 						putimage(position_x,position_y,200,255,&bashenerzhao1_,i*200,0,SRCAND);
 						putimage(position_x,position_y,200,255,&bashenerzhao1,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
-						for(i=0;(i<9&& kbhit()!=1);i++)
+						for(i=0;i<9;i++)
 					{
 						clearrectangle(position_x,position_y,position_x+200,position_y+255);
 						putimage(0,0,&bk);
 						putimage(position_x,position_y,200,255,&bashenerzhao2_,i*200,0,SRCAND);
 						putimage(position_x,position_y,200,255,&bashenerzhao2,i*200,0,SRCPAINT);
+						putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
 						Sleep(50);
 						FlushBatchDraw();
 					}
 				}
-				if(input=='j')
+				if(GetAsyncKeyState(0x4A)&0x8000)		//实现八神的普攻 j
 				{	
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					left++;
-					putimage(position_x,position_y,200,255,&bashenpugong11_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashenpugong11,left*200,0,SRCPAINT);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					left++;
-					putimage(position_x,position_y,200,255,&bashenpugong12_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashenpugong12,left*200,0,SRCPAINT);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					left++;
-					putimage(position_x,position_y,200,255,&bashenpugong13_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashenpugong13,left*200,0,SRCPAINT);
-					FlushBatchDraw();
-					if(left==10)
-						left=0;
-					
-					clearrectangle(position_x,position_y,position_x+200,position_y+255);
-					putimage(0,0,&bk);
-					left++;
-					putimage(position_x,position_y,200,255,&bashenpugong14_,left*200,0,SRCAND);
-					putimage(position_x,position_y,200,255,&bashenpugong14,left*200,0,SRCPAINT);
-					FlushBatchDraw();
-					if(left==4)
-						left=0;
-				left=0;
+						for(i=0;i<10;i++)
+						{
+							clearrectangle(position_x,position_y,position_x+150,position_y+255);
+							putimage(0,0,&bk);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							putimage(position_x,position_y,150,255,&bashenpugong11_,i*150,0,SRCAND);
+							putimage(position_x,position_y,150,255,&bashenpugong11,i*150,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+						for(i=0;i<10;i++)
+						{
+							clearrectangle(position_x,position_y,position_x+150,position_y+255);
+							putimage(0,0,&bk);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							putimage(position_x,position_y,150,255,&bashenpugong12_,i*150,0,SRCAND);
+							putimage(position_x,position_y,150,255,&bashenpugong12,i*150,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+						for(i=0;i<10;i++)
+						{
+							clearrectangle(position_x,position_y,position_x+150,position_y+255);
+							putimage(0,0,&bk);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							putimage(position_x,position_y,150,255,&bashenpugong13_,i*150,0,SRCAND);
+							putimage(position_x,position_y,150,255,&bashenpugong13,i*150,0,SRCPAINT);
+							putimage(position_x2,position_y2,200,255,&kzhanli1_,i*200,0,SRCAND);
+							putimage(position_x2,position_y2,200,255,&kzhanli1,i*200,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
+						for(i=0;i<4;i++)
+						{
+							clearrectangle(position_x,position_y,position_x+150,position_y+255);
+							putimage(0,0,&bk);
+							if(position_x<=position_x2-165)
+							{
+								position_x=position_x+5;
+							}
+							putimage(position_x,position_y,150,255,&bashenpugong14_,i*150,0,SRCAND);
+							putimage(position_x,position_y,150,255,&bashenpugong14,i*150,0,SRCPAINT);
+							Sleep(50);
+							FlushBatchDraw();
+						}
 				}
+			//导入右侧玩家控制的人物的动作
+			key=getch();
+			
+			if(GetAsyncKeyState(VK_LEFT)&0x8000)		//实现k的前进
+			{
+					for(i=0;i<10;i++)
+					{
+						clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+						putimage(0,0,&bk);
+						if(position_x2>=0)	
+						{
+							position_x2=position_x2-15;
+						}
+						putimage(position_x2,position_y2,200,255,&kqianjin1_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kqianjin1,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+						for(i=0;i<5;i++)
+					{
+						clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+						putimage(0,0,&bk);
+						if(position_x2>=0)	
+						{
+							position_x2=position_x2-15;
+						}
+						putimage(position_x2,position_y2,200,255,&kqianjin2_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kqianjin2,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+			}
+			if(GetAsyncKeyState(VK_RIGHT)&0x8000)		//实现k的后退
+			{
+					for(i=5;i<10;i++)
+					{
+						clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+						putimage(0,0,&bk);
+						if(position_x2>=position_x)	
+						{
+							position_x2=position_x2+15;
+						}
+						putimage(position_x2,position_y2,200,255,&kqianjin2_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kqianjin2,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+					for(i=5;i<11;i++)
+					{
+						clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+						putimage(0,0,&bk);
+						if(position_x2>=position_x)	
+						{
+							position_x2=position_x2+15;
+						}
+						putimage(position_x2,position_y2,200,255,&kqianjin3_,i*200,0,SRCAND);
+						putimage(position_x2,position_y2,200,255,&kqianjin3,i*200,0,SRCPAINT);
+						Sleep(50);
+						FlushBatchDraw();
+					}
+			}
+			if(GetAsyncKeyState(VK_UP)&0x8000)			//实现k的跳跃
+			{	
+				for(i=0;i<7;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_y2>=0)	
+					{
+						position_y2=position_y2-30;
+					}
+					putimage(position_x2,position_y2,200,255,&ktiaoyue2_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&ktiaoyue2,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=5;i<12;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_y2<=high*1.3-255)	
+					{
+						position_y2=position_y2+30;
+					}
+					putimage(position_x2,position_y2,200,255,&ktiaoyue3_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&ktiaoyue3,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+			}
+			if(GetAsyncKeyState(VK_DOWN)&0x8000)			//k下蹲
+			{	
+				
+				for(i=0;i<2;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					putimage(position_x2,position_y2,200,255,&kxiadun1_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kxiadun1,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<4;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+100,position_y2+150);
+					putimage(0,0,&bk);
+					putimage(position_x2,position_y2+100,100,255,&kxiadun2_,i*100,0,SRCAND);
+					putimage(position_x2,position_y2+100,100,255,&kxiadun2,i*100,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<4;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					putimage(position_x2,position_y2,200,255,&kxiadun3_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kxiadun3,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+			}
+			if(GetAsyncKeyState(0x30)&0x8000)			//k释放了大招
+			{
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao1_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao1,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao2_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao2,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao3_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao3,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao4_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao4,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao5_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao5,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao6_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao6,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao7_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao7,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao8_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao8,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao9_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao9,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao10_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao10,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao11_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao11,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao12_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao12,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao13_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao13,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao14_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao14,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2+12;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao15_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao15,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-12;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao16_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao16,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<12;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{	
+						position_x2=position_x2-3;
+					}
+					putimage(position_x2,position_y2,200,255,&kdazhao17_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&kdazhao17,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+			}
+			if(GetAsyncKeyState(0x31)&0x8000)
+			{
+				for(i=0;i<12;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+250,position_y2+300);
+					putimage(0,0,&bk);
+					putimage(position_x2,position_y2,250,300,&kerzhao1_,i*250,0,SRCAND);
+					putimage(position_x2,position_y2,250,300,&kerzhao1,i*250,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<12;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+250,position_y2+300);
+					putimage(0,0,&bk);
+					putimage(position_x2,position_y2,250,300,&kerzhao2_,i*250,0,SRCAND);
+					putimage(position_x2,position_y2,250,300,&kerzhao2,i*250,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+			}
+			if(GetAsyncKeyState(0x33)&0x8000)
+			{
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{
+						position_x2=position_x2-5;
+					}
+					putimage(position_x2,position_y2,200,255,&ksanzhao1_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&ksanzhao1,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{
+						position_x2=position_x2-5;
+					}
+					putimage(position_x2,position_y2,200,255,&ksanzhao2_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&ksanzhao2,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{
+						position_x2=position_x2-5;
+					}
+					putimage(position_x2,position_y2,200,255,&ksanzhao3_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&ksanzhao3,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{
+						position_x2=position_x2-5;
+					}
+					putimage(position_x2,position_y2,200,255,&ksanzhao4_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&ksanzhao4,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<10;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+200,position_y2+255);
+					putimage(0,0,&bk);
+					if(position_x2>=0)
+					{
+						position_x2=position_x2-5;
+					}
+					putimage(position_x2,position_y2,200,255,&ksanzhao5_,i*200,0,SRCAND);
+					putimage(position_x2,position_y2,200,255,&ksanzhao5,i*200,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+			}
+			if(GetAsyncKeyState(0x35)&0x8000)
+			{
+				for(i=0;i<3;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+250,position_y2+300);
+					putimage(0,0,&bk);
+					putimage(position_x2,position_y2,250,300,&kpugong23_,i*250,0,SRCAND);
+					putimage(position_x2,position_y2,250,300,&kpugong23,i*250,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<15;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+300,position_y2+250);
+					putimage(0,0,&bk);
+					putimage(position_x2,position_y2,300,250,&kpugong22_,i*300,0,SRCAND);
+					putimage(position_x2,position_y2,300,250,&kpugong22,i*300,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+				for(i=0;i<2;i++)
+				{
+					clearrectangle(position_x2,position_y2,position_x2+250,position_y2+300);
+					putimage(0,0,&bk);
+					putimage(position_x2,position_y2,250,300,&kpugong21_,i*250,0,SRCAND);
+					putimage(position_x2,position_y2,250,300,&kpugong21,i*250,0,SRCPAINT);
+					Sleep(50);
+					FlushBatchDraw();
+				}
+			}
 			}
 		
 		}
@@ -951,8 +1636,8 @@ void startup()			//初始化函数
 	loadimage(&cursor1,".\\透明mask.bmp");
 	loadimage(&cursor2,".\\透明.bmp");
 	//战斗背景的导入
-	loadimage(&bk,".\\bk.jpg");
-	//人物动作和战斗效果的导入	
+	loadimage(&bk,".\\bk.png");
+	//左侧玩家控制的人物动作和战斗效果的导入	
 	loadimage(&bashenbenpao1,".\\bashen 1.bmp");
 	loadimage(&bashenbenpao1_,".\\bashen1.bmp");
 	loadimage(&bashenzhanli1,".\\bashen 2.bmp");
@@ -1027,6 +1712,121 @@ void startup()			//初始化函数
 	loadimage(&bashentiaoyuegai1_,".\\bashen36.bmp");
 	loadimage(&bashentiaoyuegai2,".\\bashen 37.bmp");
 	loadimage(&bashentiaoyuegai2_,".\\bashen37.bmp");
+	//右侧玩家控制的人物的动作和战斗效果导入
+	loadimage(&kbenpao1,".\\k 1.bmp");
+	loadimage(&kbenpao1_,".\\k1.bmp");
+	loadimage(&kbenpao2,".\\k 2.bmp");
+	loadimage(&kbenpao2_,".\\k2.bmp");
+	loadimage(&kchuchang1,".\\k 3.bmp");
+	loadimage(&kchuchang1_,".\\k3.bmp");
+	loadimage(&kchuchang2,".\\k 4.bmp");
+	loadimage(&kchuchang2_,".\\k4.bmp");
+	loadimage(&kchuchang3,".\\k 5.bmp");
+	loadimage(&kchuchang3_,".\\k5.bmp");
+	loadimage(&kchuchang4,".\\k 6.bmp");
+	loadimage(&kchuchang4_,".\\k6.bmp");
+	loadimage(&kzhanli1,".\\k 60.bmp");
+	loadimage(&kzhanli1_,".\\k60.bmp");
+	loadimage(&kdazhao1,".\\k 8.bmp");
+	loadimage(&kdazhao1_,".\\k8.bmp");	
+	loadimage(&kdazhao2,".\\k 9.bmp");
+	loadimage(&kdazhao2_,".\\k9.bmp");
+	loadimage(&kdazhao3,".\\k 10.bmp");
+	loadimage(&kdazhao3_,".\\k10bmp");
+	loadimage(&kdazhao4,".\\k 11.bmp");
+	loadimage(&kdazhao4_,".\\k11.bmp");
+	loadimage(&kdazhao5,".\\k 12.bmp");
+	loadimage(&kdazhao5_,".\\k12.bmp");
+	loadimage(&kdazhao6,".\\k 13.bmp");
+	loadimage(&kdazhao6_,".\\k13.bmp");
+	loadimage(&kdazhao7,".\\k 14.bmp");
+	loadimage(&kdazhao7_,".\\k14.bmp");	
+	loadimage(&kdazhao8,".\\k 15.bmp");
+	loadimage(&kdazhao8_,".\\k15.bmp");
+	loadimage(&kdazhao9,".\\k 16.bmp");
+	loadimage(&kdazhao9_,".\\k16.bmp");
+	loadimage(&kdazhao10,".\\k 17.bmp");
+	loadimage(&kdazhao10_,".\\k17.bmp");
+	loadimage(&kdazhao11,".\\k 18.bmp");
+	loadimage(&kdazhao11_,".\\k18.bmp");
+	loadimage(&kdazhao12,".\\k 19.bmp");
+	loadimage(&kdazhao12_,".\\k19.bmp");
+	loadimage(&kdazhao13,".\\k 20.bmp");
+	loadimage(&kdazhao13_,".\\k20.bmp");	
+	loadimage(&kdazhao14,".\\k 21.bmp");
+	loadimage(&kdazhao14_,".\\k21.bmp");
+	loadimage(&kdazhao15,".\\k 22.bmp");
+	loadimage(&kdazhao15_,".\\k22.bmp");
+	loadimage(&kdazhao16,".\\k 23.bmp");
+	loadimage(&kdazhao16_,".\\k23.bmp");
+	loadimage(&kdazhao17,".\\k 24.bmp");
+	loadimage(&kdazhao17_,".\\k24.bmp");
+	loadimage(&kqianjin1,".\\k 25.bmp");
+	loadimage(&kqianjin1_,".\\k25.bmp");
+	loadimage(&kqianjin2,".\\k 26.bmp");
+	loadimage(&kqianjin2_,".\\k26.bmp");
+	loadimage(&kqianjin3,".\\k 27.bmp");
+	loadimage(&kqianjin3_,".\\k27.bmp");
+	loadimage(&khuibi11,".\\k 30.bmp");
+	loadimage(&khuibi11_,".\\k30.bmp");
+	loadimage(&khuibi21,".\\k 31.bmp");
+	loadimage(&khuibi21_,".\\k31.bmp");
+	loadimage(&ksanzhao1,".\\k 32.bmp");
+	loadimage(&ksanzhao1_,".\\k32.bmp");
+	loadimage(&ksanzhao2,".\\k 33.bmp");
+	loadimage(&ksanzhao2_,".\\k33.bmp");
+	loadimage(&ksanzhao3,".\\k 34.bmp");
+	loadimage(&ksanzhao3_,".\\k34.bmp");
+	loadimage(&ksanzhao4,".\\k 35.bmp");
+	loadimage(&ksanzhao4_,".\\k35.bmp");	
+	loadimage(&ksanzhao5,".\\k 36.bmp");
+	loadimage(&ksanzhao5_,".\\k36.bmp");
+	loadimage(&ktiaoyue1,".\\k 37.bmp");
+	loadimage(&ktiaoyue1_,".\\k37.bmp");
+	loadimage(&ktiaoyue2,".\\k 38.bmp");
+	loadimage(&ktiaoyue2_,".\\k38.bmp");
+	loadimage(&ktiaoyue3,".\\k 39.bmp");
+	loadimage(&ktiaoyue3_,".\\k39.bmp");
+	loadimage(&kpugong11,".\\k 40.bmp");
+	loadimage(&kpugong11_,".\\k40.bmp");
+	loadimage(&kpugong12,".\\k 41.bmp");
+	loadimage(&kpugong12_,".\\k41.bmp");	
+	loadimage(&kjidao1,".\\k 42.bmp");
+	loadimage(&kjidao1_,".\\k42.bmp");
+	loadimage(&kjidao2,".\\k 43.bmp");
+	loadimage(&kjidao2_,".\\k43.bmp");
+	loadimage(&kjidao3,".\\k 44.bmp");
+	loadimage(&kjidao3_,".\\k44.bmp");
+	loadimage(&kfangshou1,".\\k 45.bmp");
+	loadimage(&kfangshou1_,".\\k45.bmp");
+	loadimage(&kxiadun1,".\\k 46.bmp");
+	loadimage(&kxiadun1_,".\\k46.bmp");
+	loadimage(&kxiadun2,".\\k 47.bmp");
+	loadimage(&kxiadun2_,".\\k47.bmp");	
+	loadimage(&kxiadun3,".\\k 48.bmp");
+	loadimage(&kxiadun3_,".\\k48.bmp");
+	loadimage(&kerzhao1,".\\k 49.bmp");
+	loadimage(&kerzhao1_,".\\k49.bmp");
+	loadimage(&kerzhao2,".\\k 50.bmp");
+	loadimage(&kerzhao2_,".\\k50.bmp");
+	loadimage(&khoutui1,".\\k 51.bmp");
+	loadimage(&khoutui1_,".\\k51.bmp");
+	loadimage(&khoutui2,".\\k 52.bmp");
+	loadimage(&khoutui2_,".\\k52.bmp");
+	loadimage(&khoutui3,".\\k 53.bmp");
+	loadimage(&khoutui3_,".\\k53.bmp");	
+	loadimage(&kbaoqi2,".\\k 54.bmp");
+	loadimage(&kbaoqi2_,".\\k54.bmp");
+	loadimage(&kbaoqi3,".\\k 55.bmp");
+	loadimage(&kbaoqi3_,".\\k55.bmp");
+	loadimage(&kpugong21,".\\k 56.bmp");
+	loadimage(&kpugong21_,".\\k56.bmp");
+	loadimage(&kpugong22,".\\k 57.bmp");
+	loadimage(&kpugong22_,".\\k57.bmp");
+	loadimage(&kpugong23,".\\k 58.bmp");
+	loadimage(&kpugong23_,".\\k58.bmp");
+	loadimage(&kbaoqi1,".\\k 59.bmp");
+	loadimage(&kbaoqi1_,".\\k59.bmp");
 	BeginBatchDraw();
 }
 
